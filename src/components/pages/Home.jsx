@@ -182,103 +182,42 @@ const handleNewWheel = () => {
     toast.info('Started new wheel');
   };
 
-if (loading) {
+  if (loading) {
     return (
       <div className="h-screen flex flex-col overflow-hidden bg-surface-200">
-        <motion.div 
-          className="h-16 bg-white border-b border-surface-200"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          <div className="h-full bg-gradient-to-r from-surface-200 via-surface-300 to-surface-200 animate-pulse" />
-        </motion.div>
+        <div className="h-16 bg-white border-b border-surface-200 animate-pulse" />
         <div className="flex-1 flex">
-          <motion.div 
-            className="flex-1 p-6"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 }}
-          >
+          <div className="flex-1 p-6">
             <div className="flex items-center justify-center h-full">
-              <motion.div 
-                className="w-80 h-80 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full"
-                animate={{ 
-                  scale: [1, 1.05, 1],
-                  rotate: [0, 5, -5, 0]
-                }}
-                transition={{ 
-                  duration: 2, 
-                  repeat: Infinity,
-                  ease: "easeInOut" 
-                }}
-              />
+              <div className="w-80 h-80 bg-surface-300 rounded-full animate-pulse" />
             </div>
-          </motion.div>
-          <motion.div 
-            className="w-96 p-6"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="bg-gradient-to-br from-surface-200 to-surface-300 rounded-xl h-full animate-pulse" />
-          </motion.div>
+          </div>
+          <div className="w-96 p-6">
+            <div className="bg-surface-300 rounded-xl h-full animate-pulse" />
+          </div>
         </div>
       </div>
     );
   }
 
-if (error) {
+  if (error) {
     return (
       <div className="h-screen flex items-center justify-center bg-surface-200">
-        <motion.div 
-          className="text-center"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <motion.div 
-            className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center"
-            animate={{ 
-              scale: [1, 1.1, 1],
-              rotate: [0, -10, 10, 0]
-            }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity,
-              ease: "easeInOut" 
-            }}
-          >
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
             <span className="text-2xl">⚠️</span>
-          </motion.div>
-          <motion.h2 
-            className="text-xl font-semibold text-surface-900 mb-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
+          </div>
+          <h2 className="text-xl font-semibold text-surface-900 mb-2">
             Something went wrong
-          </motion.h2>
-          <motion.p 
-            className="text-surface-600 mb-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            {error}
-          </motion.p>
-          <motion.button
+          </h2>
+          <p className="text-surface-600 mb-4">{error}</p>
+          <button
             onClick={loadEntries}
-            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-purple-800 transition-all duration-200 shadow-lg hover:shadow-xl"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
+            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-purple-800 transition-colors"
           >
             Try Again
-          </motion.button>
-        </motion.div>
+          </button>
+        </div>
       </div>
     );
   }
@@ -333,18 +272,12 @@ if (isFullscreen) {
       
       <div className="flex-1 flex overflow-hidden">
         {/* Main Wheel Area */}
-<motion.div
+        <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
           className="flex-1 flex flex-col p-6 overflow-hidden"
         >
-          <motion.div 
-            className="flex-1 flex items-center justify-center mb-6"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-          >
+          <div className="flex-1 flex items-center justify-center mb-6">
             <SpinWheel
               entries={entries}
               isSpinning={isSpinning}
@@ -352,14 +285,9 @@ if (isFullscreen) {
               spinDuration={spinDuration}
               selectedTheme={selectedTheme}
             />
-          </motion.div>
+          </div>
           
-          <motion.div 
-            className="flex justify-center"
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.4 }}
-          >
+          <div className="flex justify-center">
             <SpinControls
               onSpin={handleSpin}
               isSpinning={isSpinning}
@@ -369,14 +297,13 @@ if (isFullscreen) {
               isFullscreen={isFullscreen}
               onToggleFullscreen={toggleFullscreen}
             />
-          </motion.div>
+          </div>
         </motion.div>
 
 {/* Sidebar */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
           className="w-96 p-6 flex-shrink-0"
         >
           <EntryManager
