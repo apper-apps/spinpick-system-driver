@@ -26,13 +26,12 @@ useEffect(() => {
       setCenterImage(img);
       setImageLoaded(true);
     };
-    img.onerror = () => {
+img.onerror = () => {
       console.warn('Failed to load center image');
       setImageLoaded(false);
     };
-    img.src = "https://res.cloudinary.com/ddizys2f8/image/upload/v1751037789/apper-text_weoufe.png";
+    img.src = "https://res.cloudinary.com/ddizys2f8/image/upload/v1751037788/apper-text0_o4qva4.svg";
   }, []);
-
   useEffect(() => {
     drawWheel();
   }, [entries, colors, rotation, imageLoaded, centerImage]);
