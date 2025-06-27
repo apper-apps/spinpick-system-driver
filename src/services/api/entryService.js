@@ -1,25 +1,25 @@
-import { entries } from '@/services/mockData/entries.json';
+import entryData from '@/services/mockData/entries.json';
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-let entryData = [...entries];
+let entries = [...entryData];
 
 export const entryService = {
   async getAll() {
     await delay(300);
-    return [...entryData];
+    return [...entries];
   },
 
   async getById(id) {
     await delay(200);
-    const entry = entryData.find(item => item.Id === parseInt(id, 10));
+    const entry = entries.find(item => item.Id === parseInt(id, 10));
     if (!entry) {
       throw new Error('Entry not found');
     }
     return { ...entry };
   },
 
-async create(entryData) {
+  async create(entryData) {
     await delay(300);
     const maxId = Math.max(...entries.map(item => item.Id), 0);
     const newEntry = {
@@ -33,35 +33,35 @@ async create(entryData) {
 
   async update(id, updatedData) {
     await delay(300);
-    const index = entryData.findIndex(item => item.Id === parseInt(id, 10));
+    const index = entries.findIndex(item => item.Id === parseInt(id, 10));
     if (index === -1) {
       throw new Error('Entry not found');
     }
     const { Id, ...dataWithoutId } = updatedData;
-    entryData[index] = { ...entryData[index], ...dataWithoutId };
-    return { ...entryData[index] };
+    entries[index] = { ...entries[index], ...dataWithoutId };
+    return { ...entries[index] };
   },
 
   async delete(id) {
     await delay(200);
-    const index = entryData.findIndex(item => item.Id === parseInt(id, 10));
+    const index = entries.findIndex(item => item.Id === parseInt(id, 10));
     if (index === -1) {
       throw new Error('Entry not found');
     }
-    const deletedEntry = { ...entryData[index] };
-    entryData.splice(index, 1);
+    const deletedEntry = { ...entries[index] };
+    entries.splice(index, 1);
     return deletedEntry;
   },
 
   async deleteAll() {
     await delay(200);
-    entryData = [];
+    entries = [];
     return true;
   },
 
   async reorder(reorderedEntries) {
     await delay(200);
-    entryData = [...reorderedEntries];
-    return [...entryData];
+    entries = [...reorderedEntries];
+    return [...entries];
   }
 };
