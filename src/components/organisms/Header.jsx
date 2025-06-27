@@ -1,11 +1,11 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
-import Text from '@/components/atoms/Text';
-import Button from '@/components/atoms/Button';
-import ThemeSelector from '@/components/molecules/ThemeSelector';
-import ApperIcon from '@/components/ApperIcon';
+import { motion } from "framer-motion";
+import React, { useState } from "react";
+import ApperIcon from "@/components/ApperIcon";
+import ThemeSelector from "@/components/molecules/ThemeSelector";
+import Text from "@/components/atoms/Text";
+import Button from "@/components/atoms/Button";
 
-const Header = ({ selectedTheme, onThemeChange, spinHistory = [] }) => {
+const Header = ({ selectedTheme, onThemeChange, spinHistory = [], onClearHistory }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
 
@@ -69,10 +69,12 @@ Appick
       )}
 
       {/* History Modal */}
+{/* History Modal */}
       {showHistory && (
         <HistoryModal
           spinHistory={spinHistory}
-          onClose={() => setShowHistory(false)}
+onClose={() => setShowHistory(false)}
+          onClearHistory={onClearHistory}
         />
       )}
     </>
@@ -145,7 +147,7 @@ const SettingsModal = ({ selectedTheme, onThemeChange, onClose, spinDuration, on
   );
 };
 
-const HistoryModal = ({ spinHistory, onClose }) => {
+const HistoryModal = ({ spinHistory, onClose, onClearHistory }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -204,7 +206,22 @@ const HistoryModal = ({ spinHistory, onClose }) => {
           )}
         </div>
 
-        <div className="mt-6 pt-4 border-t border-surface-200">
+<div className="mt-6 pt-4 border-t border-surface-200 space-y-3">
+          {spinHistory.length > 0 && (
+            <Button 
+              variant="ghost" 
+              onClick={() => {
+                if (window.confirm('Are you sure you want to clear all spin history?')) {
+                  onClearHistory();
+                  onClose();
+                }
+              }}
+              className="w-full text-red-500 hover:bg-red-50"
+            >
+              <ApperIcon name="Trash2" size={16} className="mr-2" />
+              Clear History
+            </Button>
+          )}
           <Button variant="primary" onClick={onClose} className="w-full">
             Close
           </Button>

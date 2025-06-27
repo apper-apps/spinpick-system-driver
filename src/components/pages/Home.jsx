@@ -74,14 +74,25 @@ useEffect(() => {
     }
   };
 
-  const loadSpinHistory = async () => {
+const loadSpinHistory = async () => {
     try {
       const results = await spinResultService.getAll();
       setSpinHistory(results.slice(-10)); // Keep last 10 results
     } catch (err) {
       console.error('Failed to load spin history:', err);
     }
-};
+  };
+
+  const clearSpinHistory = async () => {
+    try {
+      await spinResultService.deleteAll();
+      setSpinHistory([]);
+      toast.success('Spin history cleared');
+    } catch (err) {
+      console.error('Failed to clear spin history:', err);
+      toast.error('Failed to clear spin history');
+    }
+  };
 
   const handleSpinStart = () => {
     if (entries.length < 2) {
@@ -196,12 +207,13 @@ className="flex flex-col items-center space-y-8"
 
 return (
     <div className="h-screen flex flex-col overflow-hidden bg-surface-200">
-      <Header
+<Header
         selectedTheme={selectedTheme}
         onThemeChange={handleThemeChange}
         spinHistory={spinHistory}
         spinDuration={spinDuration}
         onSpinDurationChange={setSpinDuration}
+        onClearHistory={clearSpinHistory}
       />
       
 <div className="flex-1 flex overflow-hidden">

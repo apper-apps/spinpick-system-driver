@@ -1,4 +1,5 @@
-import { spinResults } from '@/services/mockData/spinResults.json';
+import React from "react";
+import { spinResults } from "@/services/mockData/spinResults.json";
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -27,9 +28,15 @@ export const spinResultService = {
     return { ...newResult };
   },
 
-  async clearHistory() {
+async clearHistory() {
     await delay(200);
     spinResultData = [];
+    return true;
+  },
+
+  async deleteAll() {
+    await delay(200);
+    spinResultData.length = 0;
     return true;
   }
 };
