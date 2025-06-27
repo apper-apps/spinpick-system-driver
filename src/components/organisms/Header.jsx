@@ -5,7 +5,7 @@ import ThemeSelector from "@/components/molecules/ThemeSelector";
 import Text from "@/components/atoms/Text";
 import Button from "@/components/atoms/Button";
 
-const Header = ({ selectedTheme, onThemeChange, spinHistory = [], onClearHistory, isFullscreen = false, onToggleFullscreen }) => {
+const Header = ({ selectedTheme, onThemeChange, spinHistory = [], onClearHistory, isFullscreen = false, onToggleFullscreen, spinDuration, onSpinDurationChange }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   return (
