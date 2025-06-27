@@ -171,11 +171,11 @@ const handleSpin = () => {
     isSpinning
   }));
 
-  return (
+return (
     <div className="flex items-center justify-center">
       <motion.div
         whileHover={{ scale: 1.02 }}
-        className="relative cursor-pointer"
+        className="relative cursor-pointer bg-gradient-radial from-purple-100 via-blue-50 to-transparent rounded-full p-8 bg-opacity-50"
         onClick={handleSpin}
       >
 <canvas
