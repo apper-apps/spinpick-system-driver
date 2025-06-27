@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { entryService } from "@/services/api/entryService";
@@ -122,108 +122,241 @@ const EntryManager = ({
     }
   };
 
-  return (
-    <div className="bg-surface-50 rounded-xl p-6 shadow-lg border border-surface-200 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-surface-900">
-          Entries ({entries.length})
-        </h2>
-        {entries.length > 0 && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleClearAll}
-            className="text-red-500 hover:bg-red-50"
-          >
-            <ApperIcon name="Trash2" size={16} className="mr-2" />
-            Clear All
-          </Button>
-)}
-        <div className="flex gap-2">
-          {onNewWheel && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onNewWheel}
-              className="text-surface-600 hover:bg-surface-100"
-            >
-              <ApperIcon name="Plus" size={16} className="mr-2" />
-              New
-            </Button>
-          )}
-          {onSaveWheel && (
-            <Button
-              variant={hasUnsavedChanges ? "primary" : "ghost"}
-              size="sm"
-              onClick={() => setShowSaveModal(true)}
-              className={hasUnsavedChanges ? "bg-primary text-white" : "text-surface-600 hover:bg-surface-100"}
-            >
-              <ApperIcon name="Save" size={16} className="mr-2" />
-              Save
-            </Button>
-          )}
-        </div>
-      </div>
-
-      <div className="space-y-4 mb-6">
-        <div className="flex gap-2">
-          <Input
-            placeholder="Enter name or option..."
-            value={newEntryText}
-            onChange={(e) => setNewEntryText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="flex-1"
-          />
-          <Button
-            onClick={handleAddEntry}
-            disabled={!newEntryText.trim() || loading}
-            loading={loading}
-          >
-            <ApperIcon name="Plus" size={16} />
-          </Button>
-        </div>
-
-        <BulkImportButton onImport={handleBulkImport} />
-      </div>
-
-      <div className="flex-1 overflow-y-auto space-y-3">
+return (
+    <motion.div
+    className="bg-surface-50 rounded-xl p-6 shadow-lg border border-surface-200 h-full flex flex-col glass-effect"
+    initial={{
+        opacity: 0,
+        y: 20
+    }}
+    animate={{
+        opacity: 1,
+        y: 0
+    }}
+    transition={{
+        duration: 0.5
+    }}>
+    <motion.div
+        className="flex items-center justify-between mb-6"
+        initial={{
+            opacity: 0
+        }}
+        animate={{
+            opacity: 1
+        }}
+        transition={{
+            delay: 0.2
+        }}>
+        <motion.h2
+            className="text-xl font-bold text-surface-900"
+            animate={{
+                color: entries.length > 0 ? "#111827" : "#9CA3AF"
+            }}
+            transition={{
+                duration: 0.3
+            }}>Entries ({entries.length})
+                    </motion.h2>
         <AnimatePresence>
-          {entries.map((entry, index) => (
-            <motion.div
-              key={entry.Id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ delay: index * 0.05 }}
-            >
-              <EntryCard
-                entry={entry}
-                onUpdate={handleUpdateEntry}
-                onDelete={handleDeleteEntry}
-              />
-            </motion.div>
-          ))}
+            {entries.length > 0 && <motion.div
+                initial={{
+                    opacity: 0,
+                    scale: 0.8
+                }}
+                animate={{
+                    opacity: 1,
+                    scale: 1
+                }}
+                exit={{
+                    opacity: 0,
+                    scale: 0.8
+                }}
+                transition={{
+                    duration: 0.2
+                }}>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleClearAll}
+                    className="text-red-500 hover:bg-red-50 hover:scale-105 transition-all duration-200">
+                    <ApperIcon name="Trash2" size={16} className="mr-2" />Clear All
+                                  </Button>
+            </motion.div>}
         </AnimatePresence>
-        
-        {entries.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
-          >
-            <div className="w-16 h-16 mx-auto mb-4 bg-surface-200 rounded-full flex items-center justify-center">
-              <ApperIcon name="Users" size={24} className="text-surface-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-surface-700 mb-2">
-              No entries yet
-            </h3>
-            <p className="text-surface-500 mb-4">
-              Add names or options to get started with your wheel
-            </p>
-          </motion.div>
-        )}
-      </div>
-    </div>
+        <motion.div
+            className="flex gap-2"
+            initial={{
+                opacity: 0,
+                x: 20
+            }}
+            animate={{
+                opacity: 1,
+                x: 0
+            }}
+            transition={{
+                delay: 0.3
+            }}>
+            {onNewWheel && <Button
+                variant="ghost"
+                size="sm"
+                onClick={onNewWheel}
+                className="text-surface-600 hover:bg-surface-100 hover:scale-105 transition-all duration-200">
+                <ApperIcon name="Plus" size={16} className="mr-2" />New
+                            </Button>}
+            {onSaveWheel && <motion.div
+                animate={hasUnsavedChanges ? {
+                    scale: [1, 1.05, 1]
+                } : {}}
+                transition={{
+                    duration: 2,
+                    repeat: hasUnsavedChanges ? Infinity : 0
+                }}>
+                <Button
+                    variant={hasUnsavedChanges ? "primary" : "ghost"}
+                    size="sm"
+                    onClick={() => setShowSaveModal(true)}
+                    className={`transition-all duration-200 ${hasUnsavedChanges ? "bg-primary text-white shadow-lg hover:shadow-xl animate-glow" : "text-surface-600 hover:bg-surface-100 hover:scale-105"}`}>
+                    <ApperIcon name="Save" size={16} className="mr-2" />Save
+                                  </Button>
+            </motion.div>}
+        </motion.div>
+    </motion.div>
+    <motion.div
+        className="space-y-4 mb-6"
+        initial={{
+            opacity: 0,
+            y: 10
+        }}
+        animate={{
+            opacity: 1,
+            y: 0
+        }}
+        transition={{
+            delay: 0.4
+        }}>
+        <div className="flex gap-2">
+            <motion.div
+                className="flex-1"
+                whileFocus={{
+                    scale: 1.02
+                }}>
+                <Input
+                    placeholder="Enter name or option..."
+                    value={newEntryText}
+                    onChange={e => setNewEntryText(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className="flex-1 transition-all duration-200 focus:shadow-lg" />
+            </motion.div>
+            <motion.div
+                whileHover={{
+                    scale: 1.05
+                }}
+                whileTap={{
+                    scale: 0.95
+                }}>
+                <Button
+                    onClick={handleAddEntry}
+                    disabled={!newEntryText.trim() || loading}
+                    loading={loading}
+                    className="shadow-lg hover:shadow-xl transition-all duration-200">
+                    <ApperIcon name="Plus" size={16} />
+                </Button>
+            </motion.div>
+        </div>
+        <BulkImportButton onImport={handleBulkImport} />
+    </motion.div>
+    <motion.div
+        className="flex-1 overflow-y-auto space-y-3"
+        initial={{
+            opacity: 0
+        }}
+        animate={{
+            opacity: 1
+        }}
+        transition={{
+            delay: 0.5
+        }}>
+        <AnimatePresence>
+            {entries.map((entry, index) => <motion.div
+                key={entry.Id}
+                initial={{
+                    opacity: 0,
+                    y: 20,
+                    scale: 0.95
+                }}
+                animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: 1
+                }}
+                exit={{
+                    opacity: 0,
+                    x: -100,
+                    scale: 0.8
+                }}
+                transition={{
+                    delay: index * 0.05,
+                    duration: 0.3,
+                    ease: "easeOut"
+                }}
+                whileHover={{
+                    y: -2
+                }}>
+                <EntryCard entry={entry} onUpdate={handleUpdateEntry} onDelete={handleDeleteEntry} />
+            </motion.div>)}
+        </AnimatePresence>
+        {entries.length === 0 && <motion.div
+            initial={{
+                opacity: 0,
+                scale: 0.9
+            }}
+            animate={{
+                opacity: 1,
+                scale: 1
+            }}
+            transition={{
+                duration: 0.5
+            }}
+            className="text-center py-12">
+            <motion.div
+                className="w-16 h-16 mx-auto mb-4 bg-surface-200 rounded-full flex items-center justify-center"
+                animate={{
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 5, -5, 0]
+                }}
+                transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                }}>
+                <ApperIcon name="Users" size={24} className="text-surface-400" />
+            </motion.div>
+            <motion.h3
+                className="text-lg font-semibold text-surface-700 mb-2"
+                initial={{
+                    opacity: 0
+                }}
+                animate={{
+                    opacity: 1
+                }}
+                transition={{
+                    delay: 0.2
+                }}>No entries yet
+                            </motion.h3>
+            <motion.p
+                className="text-surface-500 mb-4"
+                initial={{
+                    opacity: 0
+                }}
+                animate={{
+                    opacity: 1
+                }}
+                transition={{
+                    delay: 0.3
+                }}>Add names or options to get started with your wheel
+                            </motion.p>
+        </motion.div>}
+    </motion.div>
+</motion.div>
   );
 };
 
@@ -241,15 +374,20 @@ const BulkImportButton = ({ onImport }) => {
 
   return (
     <>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setShowModal(true)}
-        className="w-full"
+<motion.div
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
       >
-        <ApperIcon name="Upload" size={16} className="mr-2" />
-        Bulk Import
-      </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setShowModal(true)}
+          className="w-full hover:shadow-lg transition-all duration-200"
+        >
+          <ApperIcon name="Upload" size={16} className="mr-2" />
+          Bulk Import
+        </Button>
+      </motion.div>
 
       <AnimatePresence>
         {showModal && (
