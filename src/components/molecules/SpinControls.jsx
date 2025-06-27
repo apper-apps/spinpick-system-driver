@@ -21,8 +21,8 @@ const SpinControls = ({
 <Button
             variant="accent"
             size="xl"
-            onClick={() => wheelRef.current?.spin()}
-            disabled={disabled || isSpinning || entriesCount < 2}
+            onClick={() => wheelRef?.current?.spin?.()}
+            disabled={disabled || isSpinning || entriesCount < 2 || !wheelRef?.current}
             className="w-32 h-32 rounded-full text-2xl font-bold shadow-2xl"
           >
             {isSpinning ? (
