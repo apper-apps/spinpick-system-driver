@@ -159,9 +159,9 @@ return (
           </div>
 
           <BulkImportButton onImport={handleBulkImport} />
-        </div>
+</div>
 
-        <div className="flex-1 overflow-y-auto space-y-3">
+        <div className="flex-1 overflow-y-auto space-y-3 min-h-0">
           <AnimatePresence>
             {entries.map((entry, index) => (
               <motion.div
