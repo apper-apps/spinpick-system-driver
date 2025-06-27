@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { toast } from "react-toastify";
-import { spinResultService } from "@/services/api/spinResultService";
-import { entryService } from "@/services/api/entryService";
-import { wheelService } from "@/services/api/wheelService";
-import SpinControls from "@/components/molecules/SpinControls";
-import Header from "@/components/organisms/Header";
-import EntryManager from "@/components/organisms/EntryManager";
-import SpinWheel from "@/components/organisms/SpinWheel";
-import WinnerModal from "@/components/organisms/WinnerModal";
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
+import Header from '@/components/organisms/Header';
+import SpinWheel from '@/components/organisms/SpinWheel';
+import EntryManager from '@/components/organisms/EntryManager';
+import SpinControls from '@/components/molecules/SpinControls';
+import WinnerModal from '@/components/organisms/WinnerModal';
+import { entryService } from '@/services/api/entryService';
+import { spinResultService } from '@/services/api/spinResultService';
 
 const themes = [
   {
@@ -44,20 +43,11 @@ const Home = () => {
   const [showWinnerModal, setShowWinnerModal] = useState(false);
   const [spinHistory, setSpinHistory] = useState([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [currentWheelId, setCurrentWheelId] = useState(null);
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
     loadEntries();
     loadSpinHistory();
   }, []);
-
-  // Track changes to mark as unsaved
-  useEffect(() => {
-    if (entries.length > 0 || selectedTheme.id !== themes[0].id || spinDuration !== 3000) {
-      setHasUnsavedChanges(true);
-    }
-  }, [entries, selectedTheme, spinDuration]);
 
   // Handle escape key to exit fullscreen
   useEffect(() => {
@@ -133,53 +123,8 @@ const handleThemeChange = (theme) => {
     setEntries(updatedEntries);
   };
 
-const toggleFullscreen = () => {
+  const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
-  };
-  const handleLoadWheelConfig = (wheelConfig) => {
-    setEntries(wheelConfig.entries || []);
-    setSelectedTheme(themes.find(t => t.id === wheelConfig.theme) || themes[0]);
-    setSpinDuration(wheelConfig.spinDuration || 3000);
-    setCurrentWheelId(wheelConfig.Id);
-    setHasUnsavedChanges(false);
-    toast.success(`Loaded "${wheelConfig.name}"`);
-  };
-
-  const handleSaveCurrentWheel = async (name) => {
-    try {
-      const wheelConfig = {
-        name,
-        entries: [...entries],
-        theme: selectedTheme.id,
-        spinDuration
-      };
-
-      if (currentWheelId) {
-        await wheelService.update(currentWheelId, wheelConfig);
-        toast.success('Wheel configuration updated');
-      } else {
-        const newWheel = await wheelService.create(wheelConfig);
-        setCurrentWheelId(newWheel.Id);
-        toast.success('Wheel configuration saved');
-      }
-      
-      setHasUnsavedChanges(false);
-    } catch (error) {
-      toast.error('Failed to save wheel configuration');
-    }
-  };
-
-const handleNewWheel = () => {
-    if (hasUnsavedChanges && !window.confirm('You have unsaved changes. Create a new wheel anyway?')) {
-      return;
-    }
-    
-    setEntries([]);
-    setSelectedTheme(themes[0]);
-    setSpinDuration(3000);
-    setCurrentWheelId(null);
-    setHasUnsavedChanges(false);
-    toast.info('Started new wheel');
   };
 
   if (loading) {
@@ -221,6 +166,7 @@ const handleNewWheel = () => {
       </div>
     );
   }
+
 if (isFullscreen) {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-900 overflow-hidden">
@@ -300,7 +246,7 @@ if (isFullscreen) {
           </div>
         </motion.div>
 
-{/* Sidebar */}
+        {/* Sidebar */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -310,10 +256,6 @@ if (isFullscreen) {
             entries={entries}
             onEntriesChange={setEntries}
             selectedTheme={selectedTheme}
-            onSaveWheel={handleSaveCurrentWheel}
-            onNewWheel={handleNewWheel}
-            hasUnsavedChanges={hasUnsavedChanges}
-            currentWheelName={currentWheelId ? `Wheel ${currentWheelId}` : 'New Wheel'}
           />
         </motion.div>
       </div>

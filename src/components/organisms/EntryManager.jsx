@@ -1,29 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { toast } from "react-toastify";
-import { entryService } from "@/services/api/entryService";
-import ApperIcon from "@/components/ApperIcon";
-import EntryCard from "@/components/molecules/EntryCard";
-import Button from "@/components/atoms/Button";
-import Input from "@/components/atoms/Input";
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'react-toastify';
+import ApperIcon from '@/components/ApperIcon';
+import Button from '@/components/atoms/Button';
+import Input from '@/components/atoms/Input';
+import EntryCard from '@/components/molecules/EntryCard';
+import { entryService } from '@/services/api/entryService';
 
-const EntryManager = ({ entries, onEntriesChange, selectedTheme, onNewWheel, onSaveWheel, hasUnsavedChanges = false }) => {
+const EntryManager = ({ entries, onEntriesChange, selectedTheme }) => {
   const [newEntryText, setNewEntryText] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showSaveModal, setShowSaveModal] = useState(false);
-  const [wheelName, setWheelName] = useState('');
-  // Listen for wheel config loading events
-  useEffect(() => {
-    const handleLoadWheelConfig = (event) => {
-      const wheelConfig = event.detail;
-      if (wheelConfig && onEntriesChange) {
-        onEntriesChange(wheelConfig.entries || []);
-      }
-    };
-
-    window.addEventListener('loadWheelConfig', handleLoadWheelConfig);
-    return () => window.removeEventListener('loadWheelConfig', handleLoadWheelConfig);
-  }, [onEntriesChange]);
 
   const getNextColor = () => {
     const colors = selectedTheme?.colors || ['#7C3AED', '#EC4899', '#F59E0B', '#10B981', '#3B82F6', '#8B5CF6', '#EF4444', '#06B6D4'];
@@ -127,31 +113,7 @@ const EntryManager = ({ entries, onEntriesChange, selectedTheme, onNewWheel, onS
             <ApperIcon name="Trash2" size={16} className="mr-2" />
             Clear All
           </Button>
-)}
-        <div className="flex gap-2">
-          {onNewWheel && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onNewWheel}
-              className="text-surface-600 hover:bg-surface-100"
-            >
-              <ApperIcon name="Plus" size={16} className="mr-2" />
-              New
-            </Button>
-          )}
-          {onSaveWheel && (
-            <Button
-              variant={hasUnsavedChanges ? "primary" : "ghost"}
-              size="sm"
-              onClick={() => setShowSaveModal(true)}
-              className={hasUnsavedChanges ? "bg-primary text-white" : "text-surface-600 hover:bg-surface-100"}
-            >
-              <ApperIcon name="Save" size={16} className="mr-2" />
-              Save
-            </Button>
-          )}
-        </div>
+        )}
       </div>
 
       <div className="space-y-4 mb-6">
@@ -281,65 +243,6 @@ const BulkImportButton = ({ onImport }) => {
                     className="flex-1"
                   >
                     Import
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-</AnimatePresence>
-      
-      <AnimatePresence>
-        {showSaveModal && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 z-40"
-              onClick={() => setShowSaveModal(false)}
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            >
-              <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-                <h3 className="text-lg font-semibold mb-4">Save Wheel Configuration</h3>
-                <p className="text-sm text-surface-600 mb-4">
-                  Enter a name for your wheel configuration:
-                </p>
-                <Input
-                  placeholder="Enter wheel name..."
-                  value={wheelName}
-                  onChange={(e) => setWheelName(e.target.value)}
-                  className="w-full mb-4"
-                  autoFocus
-                />
-                <div className="flex gap-3">
-                  <Button
-                    variant="ghost"
-                    onClick={() => {
-                      setShowSaveModal(false);
-                      setWheelName('');
-                    }}
-                    className="flex-1"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      if (wheelName.trim() && onSaveWheel) {
-                        onSaveWheel(wheelName.trim());
-                        setShowSaveModal(false);
-                        setWheelName('');
-                      }
-                    }}
-                    disabled={!wheelName.trim()}
-                    className="flex-1"
-                  >
-                    Save
                   </Button>
                 </div>
               </div>
