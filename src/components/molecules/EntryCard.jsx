@@ -62,7 +62,7 @@ const EntryCard = ({ entry, onUpdate, onDelete, canReorder = false }) => {
           )}
         </div>
 
-        <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
           {canReorder && (
             <div className="cursor-grab active:cursor-grabbing">
               <ApperIcon name="GripVertical" size={16} className="text-surface-400" />
@@ -70,25 +70,14 @@ const EntryCard = ({ entry, onUpdate, onDelete, canReorder = false }) => {
           )}
           
           {!isEditing && (
-            <>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsEditing(true)}
-                className="p-1 h-8 w-8"
-              >
-                <ApperIcon name="Edit2" size={14} />
-              </Button>
-              
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => onDelete(entry.Id)}
-                className="p-1 h-8 w-8 text-red-500 hover:bg-red-50"
-              >
-                <ApperIcon name="Trash2" size={14} />
-              </Button>
-            </>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsEditing(true)}
+              className="p-1 h-8 w-8"
+            >
+              <ApperIcon name="Edit2" size={14} />
+            </Button>
           )}
         </div>
       </div>

@@ -107,7 +107,7 @@ const handleBulkImport = async (text) => {
   };
 
   return (
-    <div className="bg-surface-50 rounded-xl p-6 shadow-lg border border-surface-200 h-full flex flex-col">
+<div className="bg-surface-50 rounded-xl p-3 md:p-6 shadow-lg border border-surface-200 h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-surface-900">
           Entries ({entries.length})

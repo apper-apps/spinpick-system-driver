@@ -143,11 +143,11 @@ const handleSpin = () => {
         className="relative cursor-pointer"
         onClick={handleSpin}
       >
-        <canvas
+<canvas
           ref={canvasRef}
-          width={400}
-          height={400}
-          className="drop-shadow-2xl rounded-full"
+          width={window.innerWidth < 768 ? 300 : 400}
+          height={window.innerWidth < 768 ? 300 : 400}
+          className="drop-shadow-2xl rounded-full max-w-full h-auto"
         />
         {entries.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center">

@@ -216,12 +216,12 @@ return (
         onClearHistory={clearSpinHistory}
       />
       
-<div className="flex-1 flex overflow-hidden">
+<div className="flex-1 flex flex-col md:flex-row overflow-hidden">
         {/* Main Wheel Area */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
-          className="flex-1 flex flex-col p-6 overflow-hidden"
+          className="flex-1 flex flex-col p-3 md:p-6 overflow-hidden"
         >
           <div className="flex-1 flex items-center justify-center">
             <SpinWheel
@@ -238,7 +238,7 @@ return (
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
-          className="w-96 p-6 flex-shrink-0"
+          className="w-full md:w-96 p-3 md:p-6 flex-shrink-0 max-h-96 md:max-h-none"
         >
           <EntryManager
             entries={entries}

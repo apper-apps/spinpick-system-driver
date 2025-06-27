@@ -24,6 +24,21 @@ body {
   height: 100vh;
 }
 
+/* Mobile viewport optimizations */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+  
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+  
+  .mobile-full-width {
+    width: 100% !important;
+  }
+}
+
 @layer utilities {
   /* Only use scrollbar-hide for specific UI elements, never main content */
   .scrollbar-hide {

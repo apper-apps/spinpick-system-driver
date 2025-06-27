@@ -5,10 +5,9 @@ import ThemeSelector from "@/components/molecules/ThemeSelector";
 import Text from "@/components/atoms/Text";
 import Button from "@/components/atoms/Button";
 
-const Header = ({ selectedTheme, onThemeChange, spinHistory = [], onClearHistory }) => {
+const Header = ({ selectedTheme, onThemeChange, spinHistory = [], onClearHistory, isFullscreen = false, onToggleFullscreen }) => {
   const [showSettings, setShowSettings] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-
   return (
     <>
       <header className="bg-white border-b border-surface-200 px-6 py-4 flex-shrink-0">
@@ -31,17 +30,29 @@ Appick
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+<div className="flex items-center gap-2 md:gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onToggleFullscreen}
+              className="hidden md:flex"
+            >
+              <ApperIcon name={isFullscreen ? "Minimize2" : "Maximize2"} size={16} className="mr-2" />
+              <span className="hidden lg:inline">
+                {isFullscreen ? "Exit" : "Fullscreen"}
+              </span>
+            </Button>
+            
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setShowHistory(true)}
               className="relative"
             >
-              <ApperIcon name="History" size={16} className="mr-2" />
-              History
+              <ApperIcon name="History" size={16} className="md:mr-2" />
+              <span className="hidden md:inline">History</span>
               {spinHistory.length > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-xs rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 bg-primary text-white text-xs rounded-full flex items-center justify-center">
                   {spinHistory.length}
                 </span>
               )}
@@ -52,8 +63,8 @@ Appick
               size="sm"
               onClick={() => setShowSettings(true)}
             >
-              <ApperIcon name="Settings" size={16} className="mr-2" />
-              Settings
+              <ApperIcon name="Settings" size={16} className="md:mr-2" />
+              <span className="hidden md:inline">Settings</span>
             </Button>
           </div>
         </div>
