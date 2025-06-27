@@ -131,8 +131,22 @@ const SpinWheel = ({
     if (isSpinning) {
       handleSpin();
     }
-  }, [isSpinning]);
+}, [isSpinning]);
 
+  // Method to get wheel snapshot for thumbnails
+  const getWheelSnapshot = () => {
+    if (canvasRef.current && entries.length > 0) {
+      return canvasRef.current.toDataURL();
+    }
+    return null;
+  };
+
+  // Expose the snapshot method to parent components
+  useEffect(() => {
+    if (canvasRef.current) {
+      canvasRef.current.getWheelSnapshot = getWheelSnapshot;
+    }
+  }, [entries, colors]);
   return (
     <div className="flex items-center justify-center">
       <motion.div
