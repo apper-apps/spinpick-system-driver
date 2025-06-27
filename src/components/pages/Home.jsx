@@ -185,13 +185,13 @@ const toggleFullscreen = () => {
 
 if (isFullscreen) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-gray-900 overflow-hidden fixed inset-0 z-50">
+      <div className="h-screen w-screen flex items-center justify-center bg-gray-900 bg-[url('https://apper.io/images/footer-bg.svg')] bg-bottom bg-no-repeat overflow-hidden fixed inset-0 z-50">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
 className="flex flex-col items-center space-y-8 w-full h-full justify-center"
         >
-          <div className="flex items-center justify-center flex-1 bg-[url('https://apper.io/images/footer-bg.svg')] bg-center bg-no-repeat bg-contain">
+          <div className="flex items-center justify-center flex-1">
             <SpinWheel
               entries={entries}
               onSpinComplete={handleSpinComplete}
@@ -220,7 +220,7 @@ className="flex flex-col items-center space-y-8 w-full h-full justify-center"
   }
 
 return (
-    <div className="h-screen flex flex-col overflow-hidden bg-surface-200">
+    <div className="h-screen flex flex-col overflow-hidden bg-surface-200 bg-[url('https://apper.io/images/footer-bg.svg')] bg-bottom bg-no-repeat">
       <Header
         selectedTheme={selectedTheme}
         onThemeChange={handleThemeChange}
@@ -239,7 +239,7 @@ return (
           animate={{ opacity: 1, x: 0 }}
 className="flex-1 flex flex-col p-3 md:p-6 overflow-hidden"
         >
-          <div className="flex-1 flex items-center justify-center bg-[url('https://apper.io/images/footer-bg.svg')] bg-center bg-no-repeat bg-contain">
+          <div className="flex-1 flex items-center justify-center">
             <SpinWheel
               entries={entries}
               onSpinComplete={handleSpinComplete}
