@@ -189,9 +189,9 @@ if (isFullscreen) {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="flex flex-col items-center space-y-8 w-full h-full justify-center"
+className="flex flex-col items-center space-y-8 w-full h-full justify-center"
         >
-          <div className="flex items-center justify-center flex-1">
+          <div className="flex items-center justify-center flex-1 bg-[url('https://apper.io/images/apper-text.svg')] bg-center bg-no-repeat bg-contain">
             <SpinWheel
               entries={entries}
               onSpinComplete={handleSpinComplete}
@@ -237,9 +237,9 @@ return (
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
-          className="flex-1 flex flex-col p-3 md:p-6 overflow-hidden"
+className="flex-1 flex flex-col p-3 md:p-6 overflow-hidden"
         >
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex-1 flex items-center justify-center bg-[url('https://apper.io/images/apper-text.svg')] bg-center bg-no-repeat bg-contain">
             <SpinWheel
               entries={entries}
               onSpinComplete={handleSpinComplete}
