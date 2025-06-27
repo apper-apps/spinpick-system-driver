@@ -239,8 +239,8 @@ return (
                 whileFocus={{
                     scale: 1.02
                 }}>
-                <Input
-                    placeholder="Enter name or option..."
+<Input
+                    placeholder="Enter your name..."
                     value={newEntryText}
                     onChange={e => setNewEntryText(e.target.value)}
                     onKeyDown={handleKeyDown}
