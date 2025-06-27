@@ -16,7 +16,7 @@ const EntryManager = ({ entries, onEntriesChange, selectedTheme }) => {
     return colors[entries.length % colors.length];
   };
 
-  const handleAddEntry = async () => {
+const handleAddEntry = async () => {
     if (!newEntryText.trim()) return;
     
     setLoading(true);
@@ -31,7 +31,8 @@ const EntryManager = ({ entries, onEntriesChange, selectedTheme }) => {
       setNewEntryText('');
       toast.success('Entry added successfully');
     } catch (error) {
-      toast.error('Failed to add entry');
+      console.error('Error adding entry:', error);
+      toast.error(error.message || 'Failed to add entry');
     } finally {
       setLoading(false);
     }
@@ -75,19 +76,27 @@ const EntryManager = ({ entries, onEntriesChange, selectedTheme }) => {
     }
   };
 
-  const handleBulkImport = (text) => {
+const handleBulkImport = async (text) => {
     const lines = text.split(/[,\n]/).map(line => line.trim()).filter(line => line);
     const colors = selectedTheme?.colors || ['#7C3AED', '#EC4899', '#F59E0B', '#10B981', '#3B82F6', '#8B5CF6', '#EF4444', '#06B6D4'];
     
-    const newEntries = lines.map((line, index) => ({
-      Id: entries.length + index + 1,
-      text: line,
-      color: colors[(entries.length + index) % colors.length],
-      weight: 1
-    }));
-    
-    onEntriesChange([...entries, ...newEntries]);
-    toast.success(`${newEntries.length} entries imported`);
+    try {
+      const newEntries = [];
+      for (let i = 0; i < lines.length; i++) {
+        const entry = await entryService.create({
+          text: lines[i],
+          color: colors[(entries.length + i) % colors.length],
+          weight: 1
+        });
+        newEntries.push(entry);
+      }
+      
+      onEntriesChange([...entries, ...newEntries]);
+      toast.success(`${newEntries.length} entries imported`);
+    } catch (error) {
+      console.error('Error importing entries:', error);
+      toast.error(error.message || 'Failed to import entries');
+    }
   };
 
   const handleKeyDown = (e) => {

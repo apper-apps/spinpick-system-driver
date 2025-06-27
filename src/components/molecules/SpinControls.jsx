@@ -3,7 +3,7 @@ import Button from '@/components/atoms/Button';
 import ApperIcon from '@/components/ApperIcon';
 
 const SpinControls = ({ 
-  onSpin, 
+  wheelRef,
   isSpinning, 
   spinDuration, 
   onDurationChange, 
@@ -18,10 +18,10 @@ const SpinControls = ({
         <motion.div
           className={`inline-block ${isSpinning ? 'animate-pulse-glow' : ''}`}
         >
-          <Button
+<Button
             variant="accent"
             size="xl"
-            onClick={onSpin}
+            onClick={() => wheelRef.current?.spin()}
             disabled={disabled || isSpinning || entriesCount < 2}
             className="w-32 h-32 rounded-full text-2xl font-bold shadow-2xl"
           >

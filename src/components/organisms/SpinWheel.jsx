@@ -1,17 +1,17 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { motion } from 'framer-motion';
 
-const SpinWheel = ({ 
+const SpinWheel = forwardRef(({ 
   entries = [], 
-  isSpinning = false, 
   onSpinComplete, 
   spinDuration = 3000,
-  selectedTheme 
-}) => {
+  selectedTheme,
+  onSpinStart
+}, ref) => {
   const canvasRef = useRef(null);
   const [rotation, setRotation] = useState(0);
   const [winner, setWinner] = useState(null);
-
+  const [isSpinning, setIsSpinning] = useState(false);
   // Default colors if no theme selected
   const defaultColors = ['#7C3AED', '#EC4899', '#F59E0B', '#10B981', '#3B82F6', '#8B5CF6', '#EF4444', '#06B6D4'];
   const colors = selectedTheme?.colors || defaultColors;
@@ -88,8 +88,11 @@ const SpinWheel = ({
     ctx.stroke();
   };
 
-  const handleSpin = () => {
+const handleSpin = () => {
     if (entries.length < 2 || isSpinning) return;
+    
+    setIsSpinning(true);
+    onSpinStart?.();
     
     // Calculate random final rotation (multiple full rotations + random offset)
     const spins = 4 + Math.random() * 4; // 4-8 full rotations
@@ -119,6 +122,7 @@ const SpinWheel = ({
         const selectedEntry = entries[winnerIndex];
         
         setWinner(selectedEntry);
+        setIsSpinning(false);
         onSpinComplete?.(selectedEntry);
       }
     };
@@ -126,12 +130,11 @@ const SpinWheel = ({
     requestAnimationFrame(animate);
   };
 
-  // Expose spin function to parent
-  useEffect(() => {
-    if (isSpinning) {
-      handleSpin();
-    }
-  }, [isSpinning]);
+  // Expose spin method to parent component
+  useImperativeHandle(ref, () => ({
+    spin: handleSpin,
+    isSpinning
+  }));
 
   return (
     <div className="flex items-center justify-center">
@@ -163,7 +166,9 @@ const SpinWheel = ({
         )}
       </motion.div>
     </div>
-  );
-};
+);
+});
+
+SpinWheel.displayName = 'SpinWheel';
 
 export default SpinWheel;
