@@ -42,11 +42,24 @@ const Home = () => {
   const [winner, setWinner] = useState(null);
   const [showWinnerModal, setShowWinnerModal] = useState(false);
   const [spinHistory, setSpinHistory] = useState([]);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
     loadEntries();
     loadSpinHistory();
   }, []);
+
+  // Handle escape key to exit fullscreen
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isFullscreen) {
+        setIsFullscreen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen]);
 
   const loadEntries = async () => {
     setLoading(true);
@@ -100,7 +113,7 @@ const Home = () => {
     setWinner(null);
   };
 
-  const handleThemeChange = (theme) => {
+const handleThemeChange = (theme) => {
     setSelectedTheme(theme);
     // Update entry colors to match new theme
     const updatedEntries = entries.map((entry, index) => ({
@@ -108,6 +121,10 @@ const Home = () => {
       color: theme.colors[index % theme.colors.length]
     }));
     setEntries(updatedEntries);
+  };
+
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
   };
 
   if (loading) {
@@ -150,6 +167,47 @@ const Home = () => {
     );
   }
 
+if (isFullscreen) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-900 overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center space-y-8"
+        >
+          <div className="flex items-center justify-center">
+            <SpinWheel
+              entries={entries}
+              isSpinning={isSpinning}
+              onSpinComplete={handleSpinComplete}
+              spinDuration={spinDuration}
+              selectedTheme={selectedTheme}
+            />
+          </div>
+          
+          <div className="flex justify-center">
+            <SpinControls
+              onSpin={handleSpin}
+              isSpinning={isSpinning}
+              spinDuration={spinDuration}
+              onDurationChange={setSpinDuration}
+              entriesCount={entries.length}
+              isFullscreen={isFullscreen}
+              onToggleFullscreen={toggleFullscreen}
+            />
+          </div>
+        </motion.div>
+
+        <WinnerModal
+          winner={winner}
+          isOpen={showWinnerModal}
+          onClose={() => setShowWinnerModal(false)}
+          onSpinAgain={handleSpinAgain}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="h-screen flex flex-col overflow-hidden bg-surface-200">
       <Header
@@ -182,6 +240,8 @@ const Home = () => {
               spinDuration={spinDuration}
               onDurationChange={setSpinDuration}
               entriesCount={entries.length}
+              isFullscreen={isFullscreen}
+              onToggleFullscreen={toggleFullscreen}
             />
           </div>
         </motion.div>
