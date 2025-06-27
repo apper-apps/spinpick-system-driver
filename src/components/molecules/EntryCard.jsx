@@ -52,13 +52,15 @@ exit={{ opacity: 0, x: -100 }}
               className="text-sm"
             />
 ) : (
-            <span 
-              className="text-surface-900 dark:text-dark-900 font-medium cursor-pointer block truncate hover:whitespace-normal hover:break-words"
-              onClick={() => setIsEditing(true)}
-              title={entry.text}
-            >
-              {entry.text}
-            </span>
+            <div className="overflow-x-auto scrollbar-hide">
+              <span 
+                className="text-surface-900 dark:text-dark-900 font-medium cursor-pointer block whitespace-nowrap"
+                onClick={() => setIsEditing(true)}
+                title={entry.text}
+              >
+                {entry.text}
+              </span>
+            </div>
           )}
         </div>
 
