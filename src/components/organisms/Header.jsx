@@ -23,10 +23,10 @@ const Header = ({ selectedTheme, onThemeChange, spinHistory = [] }) => {
 </motion.div>
             <div>
               <Text variant="display" size="xl" weight="bold">
-                Appick
+Appick
               </Text>
               <Text variant="caption" size="sm">
-                Random Name Picker Wheel
+                Apper Giveaway Name Picker
               </Text>
             </div>
           </div>
