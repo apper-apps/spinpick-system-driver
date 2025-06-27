@@ -139,8 +139,8 @@ return (
           </Button>
         )}
       </div>
-<div className={`transition-all duration-300 ${isMobileVisible ? 'block' : 'hidden md:block'}`}>
-        <div className="space-y-4 mb-6">
+<div className={`flex flex-col h-full transition-all duration-300 ${isMobileVisible ? 'flex' : 'hidden md:flex'}`}>
+        <div className="space-y-4 mb-6 flex-shrink-0">
           <div className="flex gap-2">
             <Input
               placeholder="Enter name or option..."
@@ -161,7 +161,7 @@ return (
           <BulkImportButton onImport={handleBulkImport} />
 </div>
 
-        <div className="flex-1 overflow-y-auto space-y-3 min-h-0">
+        <div className="flex-1 overflow-y-auto space-y-3 min-h-0 max-h-full">
           <AnimatePresence>
             {entries.map((entry, index) => (
               <motion.div

@@ -271,7 +271,7 @@ return (
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           className={`w-full md:w-96 p-3 md:p-6 flex-shrink-0 transition-all duration-300 ${
-            isMobileEntriesVisible ? 'flex-1 md:flex-none' : 'max-h-0 md:max-h-none overflow-hidden md:overflow-visible'
+            isMobileEntriesVisible ? 'h-auto md:flex-none' : 'h-0 md:h-auto overflow-hidden md:overflow-visible'
           }`}
         >
           <EntryManager
