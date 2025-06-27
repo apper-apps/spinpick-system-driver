@@ -6,9 +6,9 @@ import Text from '@/components/atoms/Text';
 import ApperIcon from '@/components/ApperIcon';
 import soundService from '@/services/soundService';
 const WinnerModal = ({ winner, isOpen, onClose, onSpinAgain }) => {
-useEffect(() => {
+  useEffect(() => {
     if (isOpen && winner) {
-      // Play winner sound effect
+      // Play continuous winner sound effect
       soundService.playWinnerSound();
       
       // Trigger confetti animation
@@ -49,9 +49,25 @@ useEffect(() => {
         });
       }, 250);
       
-      return () => clearInterval(interval);
+      return () => {
+        clearInterval(interval);
+        // Stop winner sound when modal closes or component unmounts
+        soundService.stopWinnerSound();
+      };
     }
   }, [isOpen, winner]);
+
+  // Handle modal close with sound cleanup
+  const handleClose = () => {
+    soundService.stopWinnerSound();
+    onClose();
+  };
+
+  // Handle spin again with sound cleanup
+  const handleSpinAgain = () => {
+    soundService.stopWinnerSound();
+    onSpinAgain();
+  };
 
   return (
     <AnimatePresence>
@@ -61,8 +77,8 @@ useEffect(() => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-40"
-            onClick={onClose}
+className="fixed inset-0 bg-black/50 z-40"
+            onClick={handleClose}
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 50 }}
@@ -96,9 +112,9 @@ useEffect(() => {
                 </Text>
                 
                 <div className="flex flex-col gap-3">
-                  <Button
+<Button
                     variant="primary"
-                    onClick={onSpinAgain}
+                    onClick={handleSpinAgain}
                     className="flex-1"
                   >
                     <ApperIcon name="RotateCcw" size={16} className="mr-2" />
@@ -106,7 +122,7 @@ useEffect(() => {
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={onClose}
+                    onClick={handleClose}
                     className="flex-1"
                   >
                     Close
