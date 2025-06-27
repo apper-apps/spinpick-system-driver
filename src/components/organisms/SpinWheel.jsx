@@ -125,10 +125,11 @@ img.onerror = () => {
 const handleSpin = () => {
     if (entries.length < 2 || isSpinning) return;
     
-    setIsSpinning(true);
+setIsSpinning(true);
     onSpinStart?.();
     
-    // Play spin sound effect
+    // Stop any previous spin sound and play new looping spin sound
+    soundService.stopSpinSound();
     soundService.playSpinSound();
     
     // Calculate random final rotation (multiple full rotations + random offset)
@@ -151,7 +152,10 @@ const handleSpin = () => {
       
       if (progress < 1) {
         requestAnimationFrame(animate);
-      } else {
+} else {
+        // Stop the looping spin sound
+        soundService.stopSpinSound();
+        
         // Calculate winner
         const normalizedRotation = (360 - (currentRotation % 360)) % 360;
         const anglePerSegment = 360 / entries.length;
