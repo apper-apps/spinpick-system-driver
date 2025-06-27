@@ -191,7 +191,7 @@ if (isFullscreen) {
           animate={{ opacity: 1, scale: 1 }}
 className="flex flex-col items-center space-y-8 w-full h-full justify-center"
         >
-          <div className="flex items-center justify-center flex-1 bg-[url('https://res.cloudinary.com/ddizys2f8/image/upload/v1751037789/apper-text_weoufe.png')] bg-center bg-no-repeat bg-contain">
+          <div className="flex items-center justify-center flex-1 bg-[url('https://apper.io/images/launch-and-scale.svg')] bg-center bg-no-repeat bg-contain">
             <SpinWheel
               entries={entries}
               onSpinComplete={handleSpinComplete}
@@ -239,7 +239,7 @@ return (
           animate={{ opacity: 1, x: 0 }}
 className="flex-1 flex flex-col p-3 md:p-6 overflow-hidden"
         >
-          <div className="flex-1 flex items-center justify-center bg-[url('https://res.cloudinary.com/ddizys2f8/image/upload/v1751037789/apper-text_weoufe.png')] bg-center bg-no-repeat bg-contain">
+          <div className="flex-1 flex items-center justify-center bg-[url('https://apper.io/images/launch-and-scale.svg')] bg-center bg-no-repeat bg-contain">
             <SpinWheel
               entries={entries}
               onSpinComplete={handleSpinComplete}
