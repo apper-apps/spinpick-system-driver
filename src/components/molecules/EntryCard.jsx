@@ -41,8 +41,7 @@ exit={{ opacity: 0, x: -100 }}
           className="w-4 h-4 rounded-full flex-shrink-0"
           style={{ backgroundColor: entry.color }}
         />
-        
-        <div className="flex-1 min-w-0">
+<div className="flex-1 min-w-0 overflow-hidden">
           {isEditing ? (
             <Input
               value={editText}
@@ -54,8 +53,9 @@ exit={{ opacity: 0, x: -100 }}
             />
 ) : (
             <span 
-              className="text-surface-900 dark:text-dark-900 font-medium cursor-pointer break-words"
+              className="text-surface-900 dark:text-dark-900 font-medium cursor-pointer block truncate hover:whitespace-normal hover:break-words"
               onClick={() => setIsEditing(true)}
+              title={entry.text}
             >
               {entry.text}
             </span>
