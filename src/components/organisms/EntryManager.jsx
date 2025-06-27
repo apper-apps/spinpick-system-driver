@@ -7,20 +7,11 @@ import EntryCard from "@/components/molecules/EntryCard";
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 
-function EntryManager({ 
-  entries, 
-  onEntriesChange, 
-  selectedTheme, 
-  onSaveWheel, 
-  onNewWheel, 
-  hasUnsavedChanges, 
-  currentWheelName 
-}) {
+const EntryManager = ({ entries, onEntriesChange, selectedTheme, onNewWheel, onSaveWheel, hasUnsavedChanges = false }) => {
   const [newEntryText, setNewEntryText] = useState('');
   const [loading, setLoading] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [wheelName, setWheelName] = useState('');
-
   // Listen for wheel config loading events
   useEffect(() => {
     const handleLoadWheelConfig = (event) => {
