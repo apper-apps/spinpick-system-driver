@@ -1,0 +1,28 @@
+{
+  "wheels": [
+    {
+      "Id": 1,
+      "name": "Classroom Selection",
+      "entries": [
+        {"Id": 1, "text": "Alice Johnson", "color": "#7C3AED", "weight": 1},
+        {"Id": 2, "text": "Bob Smith", "color": "#EC4899", "weight": 1},
+        {"Id": 3, "text": "Carol Davis", "color": "#F59E0B", "weight": 1}
+      ],
+      "theme": "vibrant",
+      "spinDuration": 3000,
+      "createdAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "Id": 2,
+      "name": "Team Assignment",
+      "entries": [
+        {"Id": 4, "text": "Frontend Team", "color": "#10B981", "weight": 1},
+        {"Id": 5, "text": "Backend Team", "color": "#3B82F6", "weight": 1},
+        {"Id": 6, "text": "Design Team", "color": "#8B5CF6", "weight": 1}
+      ],
+      "theme": "professional",
+      "spinDuration": 4000,
+      "createdAt": "2024-01-16T14:15:00Z"
+    }
+  ]
+}

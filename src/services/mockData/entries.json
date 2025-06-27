@@ -1,0 +1,34 @@
+{
+  "entries": [
+    {
+      "Id": 1,
+      "text": "Alice Johnson",
+      "color": "#7C3AED",
+      "weight": 1
+    },
+    {
+      "Id": 2,
+      "text": "Bob Smith",
+      "color": "#EC4899",
+      "weight": 1
+    },
+    {
+      "Id": 3,
+      "text": "Carol Davis",
+      "color": "#F59E0B",
+      "weight": 1
+    },
+    {
+      "Id": 4,
+      "text": "David Wilson",
+      "color": "#10B981",
+      "weight": 1
+    },
+    {
+      "Id": 5,
+      "text": "Emma Brown",
+      "color": "#3B82F6",
+      "weight": 1
+    }
+  ]
+}
