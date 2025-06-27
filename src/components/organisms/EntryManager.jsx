@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from 'react-toastify';
-import ApperIcon from '@/components/ApperIcon';
-import Button from '@/components/atoms/Button';
-import Input from '@/components/atoms/Input';
-import EntryCard from '@/components/molecules/EntryCard';
-import { entryService } from '@/services/api/entryService';
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { entryService } from "@/services/api/entryService";
+import ApperIcon from "@/components/ApperIcon";
+import EntryCard from "@/components/molecules/EntryCard";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
 
 const EntryManager = ({ entries, onEntriesChange, selectedTheme }) => {
   const [newEntryText, setNewEntryText] = useState('');
@@ -123,65 +123,67 @@ const handleBulkImport = async (text) => {
             Clear All
           </Button>
         )}
-      </div>
+</div>
 
-      <div className="space-y-4 mb-6">
-        <div className="flex gap-2">
-          <Input
-            placeholder="Enter name or option..."
-            value={newEntryText}
-            onChange={(e) => setNewEntryText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="flex-1"
-          />
-          <Button
-            onClick={handleAddEntry}
-            disabled={!newEntryText.trim() || loading}
-            loading={loading}
-          >
-            <ApperIcon name="Plus" size={16} />
-          </Button>
+      <div className="transition-all duration-300 block">
+        <div className="space-y-4 mb-6">
+          <div className="flex gap-2">
+            <Input
+              placeholder="Enter name or option..."
+              value={newEntryText}
+              onChange={(e) => setNewEntryText(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="flex-1"
+            />
+            <Button
+              onClick={handleAddEntry}
+              disabled={!newEntryText.trim() || loading}
+              loading={loading}
+            >
+              <ApperIcon name="Plus" size={16} />
+            </Button>
+          </div>
+
+          <BulkImportButton onImport={handleBulkImport} />
         </div>
 
-        <BulkImportButton onImport={handleBulkImport} />
-      </div>
-
-      <div className="flex-1 overflow-y-auto space-y-3">
-        <AnimatePresence>
-          {entries.map((entry, index) => (
+        <div className="flex-1 overflow-y-auto space-y-3">
+          <AnimatePresence>
+            {entries.map((entry, index) => (
+              <motion.div
+                key={entry.Id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <EntryCard
+                  entry={entry}
+                  onUpdate={handleUpdateEntry}
+                  onDelete={handleDeleteEntry}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+          
+          {entries.length === 0 && (
             <motion.div
-              key={entry.Id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ delay: index * 0.05 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-12"
             >
-              <EntryCard
-                entry={entry}
-                onUpdate={handleUpdateEntry}
-                onDelete={handleDeleteEntry}
-              />
+              <div className="w-16 h-16 mx-auto mb-4 bg-surface-200 rounded-full flex items-center justify-center">
+                <ApperIcon name="Users" size={24} className="text-surface-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-surface-700 mb-2">
+                No entries yet
+              </h3>
+              <p className="text-surface-500 mb-4">
+                Add names or options to get started with your wheel
+              </p>
             </motion.div>
-          ))}
-        </AnimatePresence>
-        
-        {entries.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
-          >
-            <div className="w-16 h-16 mx-auto mb-4 bg-surface-200 rounded-full flex items-center justify-center">
-              <ApperIcon name="Users" size={24} className="text-surface-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-surface-700 mb-2">
-              No entries yet
-            </h3>
-            <p className="text-surface-500 mb-4">
-              Add names or options to get started with your wheel
-            </p>
-          </motion.div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

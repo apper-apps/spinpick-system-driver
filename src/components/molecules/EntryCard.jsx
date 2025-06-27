@@ -70,14 +70,28 @@ const EntryCard = ({ entry, onUpdate, onDelete, canReorder = false }) => {
           )}
           
           {!isEditing && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsEditing(true)}
-              className="p-1 h-8 w-8"
-            >
-              <ApperIcon name="Edit2" size={14} />
-            </Button>
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsEditing(true)}
+                className="p-1 h-8 w-8"
+              >
+                <ApperIcon name="Edit2" size={14} />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  if (window.confirm('Are you sure you want to delete this entry?')) {
+                    onDelete(entry.Id);
+                  }
+                }}
+                className="p-1 h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50"
+              >
+                <ApperIcon name="Trash2" size={14} />
+              </Button>
+            </>
           )}
         </div>
       </div>
