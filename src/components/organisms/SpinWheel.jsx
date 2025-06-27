@@ -12,13 +12,30 @@ const SpinWheel = forwardRef(({
   const [rotation, setRotation] = useState(0);
   const [winner, setWinner] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [centerImage, setCenterImage] = useState(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
   // Default colors if no theme selected
   const defaultColors = ['#7C3AED', '#EC4899', '#F59E0B', '#10B981', '#3B82F6', '#8B5CF6', '#EF4444', '#06B6D4'];
   const colors = selectedTheme?.colors || defaultColors;
 
+useEffect(() => {
+    // Load center image
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      setCenterImage(img);
+      setImageLoaded(true);
+    };
+    img.onerror = () => {
+      console.warn('Failed to load center image');
+      setImageLoaded(false);
+    };
+    img.src = "https://res.cloudinary.com/ddizys2f8/image/upload/v1751037789/apper-text_weoufe.png";
+  }, []);
+
   useEffect(() => {
     drawWheel();
-  }, [entries, colors, rotation]);
+  }, [entries, colors, rotation, imageLoaded, centerImage]);
 
   const drawWheel = () => {
     const canvas = canvasRef.current;
@@ -66,7 +83,7 @@ const SpinWheel = forwardRef(({
       ctx.restore();
     });
     
-    // Draw center circle
+// Draw center circle
     ctx.beginPath();
     ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
     ctx.fillStyle = '#374151';
@@ -74,6 +91,24 @@ const SpinWheel = forwardRef(({
     ctx.strokeStyle = '#FFFFFF';
     ctx.lineWidth = 4;
     ctx.stroke();
+    
+    // Draw center image if loaded
+    if (imageLoaded && centerImage) {
+      ctx.save();
+      // Create circular clipping path for the image
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 25, 0, 2 * Math.PI);
+      ctx.clip();
+      
+      // Calculate image dimensions to fit within the circle
+      const imageSize = 50; // 25px radius * 2
+      const imageX = centerX - imageSize / 2;
+      const imageY = centerY - imageSize / 2;
+      
+      // Draw the image
+      ctx.drawImage(centerImage, imageX, imageY, imageSize, imageSize);
+      ctx.restore();
+    }
     
     // Draw pointer
     ctx.beginPath();
