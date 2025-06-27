@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { motion } from "framer-motion";
-
+import soundService from '@/services/soundService';
 const SpinWheel = forwardRef(({ 
   entries = [], 
   onSpinComplete, 
@@ -127,6 +127,9 @@ const handleSpin = () => {
     
     setIsSpinning(true);
     onSpinStart?.();
+    
+    // Play spin sound effect
+    soundService.playSpinSound();
     
     // Calculate random final rotation (multiple full rotations + random offset)
     const spins = 4 + Math.random() * 4; // 4-8 full rotations

@@ -4,10 +4,13 @@ import confetti from 'canvas-confetti';
 import Button from '@/components/atoms/Button';
 import Text from '@/components/atoms/Text';
 import ApperIcon from '@/components/ApperIcon';
-
+import soundService from '@/services/soundService';
 const WinnerModal = ({ winner, isOpen, onClose, onSpinAgain }) => {
-  useEffect(() => {
+useEffect(() => {
     if (isOpen && winner) {
+      // Play winner sound effect
+      soundService.playWinnerSound();
+      
       // Trigger confetti animation
       const duration = 3 * 1000;
       const animationEnd = Date.now() + duration;

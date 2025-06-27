@@ -1,0 +1,92 @@
+import { Howl } from 'howler';
+
+class SoundService {
+  constructor() {
+    this.sounds = {};
+    this.initialized = false;
+    this.init();
+  }
+
+  init() {
+    try {
+      // Spin sound - a gentle whoosh/whirring sound
+      this.sounds.spin = new Howl({
+        src: ['data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmsoAS18z/DfkzwNH2+2/7JfAhlpuvT4t3MhCSSO2OfUfSUFLIHO8tmOPgkZZLrr46JRDwlFo+HwulwkBTKB0O3UnzkaE2e39vWtZBwGOJPZ6tKEKgUre8P13ZY9ABxru+7hq1ghBzSAz+/dmU4BD2m86eWnWRgMRJ7h8bJdGB8tdtCOoXIhAV6R2+vfk0ENIF+x7POsYhoGNXzN89qLOQcVZLnn4qNTEgpKounxvWEqAS153/LfjT4JEme38rWqUQwCQJ7d8bVlHgU6iNLr2o4/AhIie8z135M7DBo/+1w5wOCBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmsoAS18z/DfkzwNH2+2/7JfAhlpuvT4t3MhCSSO2OfUfSUFLIHO8tmOPgkZZLrr46JRDwlFo+HwulwkBTKB0O3UnzkaE2e39vWtZBwGOJPZ6tKEKgUre8P13ZY9ABxru+7hq1ghBzSAz+/dmU4BD2m86eWnWRgMRJ7h8bJdGB8tdtCOoXIhAV6R2+vfk0ENIF+x7POsYhoGNXzN89qLOQcVZLnn4qNTEgpKounxvWEqAS153/LfjT4JEme38rWqUQwCQJ7d8bVlHgU6iNLr2o4/AhIie8z135M7DBo='],
+        volume: 0.3,
+        loop: false,
+        preload: true,
+        html5: false
+      });
+
+      // Winner sound - a celebratory chime/bell sound
+      this.sounds.winner = new Howl({
+        src: ['data:audio/wav;base64,UklGRkoFAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQYFAAA/CwAAdRUAAJcbAAC8HQAAKx8AAOIfAADsIAAAFSEAAP0hAABcIgAAESMAAD8jAABwIwAAhyMAAJYjAADHIwAA+iMAACQkAABDJAAASyQAAD8kAAAsJAAAECQAAPEjAADPIwAAqSMAAIMjAABbIwAANyMAABUjAAD2IgAA4iIAANMiAADLIgAAxyIAAMAiAAC2IgAAqiIAAJwiAACNIgAAgCIAAHMiAABnIgAAXSIAAFQiAABLIgAAQiIAADkiAAAvIgAAJSIAABsiAAARIgAACiIAAAUiAAACIgAAASIAAAEiAAACIgAABCIAAAgiAAAMIgAAESIAABciAAAdIgAAJCIAACsiAAAxIgAANyIAAD0iAABDIgAASCIAAEsiAABOIgAAUCIAAFEiAABRIgAAUSIAAE8iAABNIgAASyIAAEgiAABEIgAAQCIAADsiAAA2IgAAMSIAACsiAAAlIgAAHyIAABkiAAATIgAADSIAAAciAAABIgAA+yEAAPQhAADtIQAA5iEAAN4hAADVIQAAzCEAAMMhAAC6IQAAsSEAAKkhAACgIQAAlSEAAIohAAB/IQAAdCEAAGghAABcIQAAUCEAAEQhAAA4IQAALCEAACEhAAAWIQAACyEAAAAhAAD2IAAA7CAAAOIQAADYIAAA0CAAACkgAAC2IAAA5CAAABEhAAA9IQAAayEAAJYhAADBIQAA7CEAABQCAAA8IgAAYyIAAIciAACoIgAAxyIAAOQiAAAAIwAAGyMAADQjAABMIwAAYiMAAHYjAACI='],
+        volume: 0.4,
+        loop: false,
+        preload: true,
+        html5: false
+      });
+
+      this.initialized = true;
+    } catch (error) {
+      console.warn('Sound initialization failed:', error);
+      this.initialized = false;
+    }
+  }
+
+  playSpinSound() {
+    if (!this.initialized || !this.sounds.spin) {
+      return;
+    }
+
+    try {
+      this.sounds.spin.play();
+    } catch (error) {
+      console.warn('Failed to play spin sound:', error);
+    }
+  }
+
+  playWinnerSound() {
+    if (!this.initialized || !this.sounds.winner) {
+      return;
+    }
+
+    try {
+      this.sounds.winner.play();
+    } catch (error) {
+      console.warn('Failed to play winner sound:', error);
+    }
+  }
+
+  setVolume(soundName, volume) {
+    if (!this.initialized || !this.sounds[soundName]) {
+      return;
+    }
+
+    try {
+      this.sounds[soundName].volume(Math.max(0, Math.min(1, volume)));
+    } catch (error) {
+      console.warn(`Failed to set volume for ${soundName}:`, error);
+    }
+  }
+
+  stopAll() {
+    if (!this.initialized) {
+      return;
+    }
+
+    try {
+      Object.values(this.sounds).forEach(sound => {
+        if (sound && sound.stop) {
+          sound.stop();
+        }
+      });
+    } catch (error) {
+      console.warn('Failed to stop sounds:', error);
+    }
+  }
+}
+
+// Create and export singleton instance
+const soundService = new SoundService();
+export default soundService;
