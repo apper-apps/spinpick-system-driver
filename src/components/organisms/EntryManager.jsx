@@ -107,39 +107,38 @@ const handleBulkImport = async (text) => {
   };
 
 return (
-    <div className="bg-surface-50 rounded-xl p-3 md:p-6 shadow-lg border border-surface-200 h-full flex flex-col">
+    <div className="bg-surface-50 dark:bg-dark-100 rounded-xl p-3 md:p-6 shadow-lg border border-surface-200 dark:border-dark-200 h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <h2 className="text-xl font-bold text-surface-900">
+<div className="flex items-center gap-3">
+          <h2 className="text-xl font-bold text-surface-900 dark:text-dark-900">
             Entries ({entries.length})
           </h2>
           {/* Mobile collapse button */}
           {onToggleVisible && (
             <button
               onClick={onToggleVisible}
-              className="md:hidden p-1 hover:bg-surface-200 rounded-md transition-colors"
+              className="md:hidden p-1 hover:bg-surface-200 dark:hover:bg-dark-200 rounded-md transition-colors"
             >
               <ApperIcon 
                 name={isMobileVisible ? "ChevronUp" : "ChevronDown"} 
                 size={16} 
-                className="text-surface-600"
+                className="text-surface-600 dark:text-dark-600"
               />
             </button>
           )}
         </div>
-        {entries.length > 0 && (
+{entries.length > 0 && (
           <Button
             variant="ghost"
             size="sm"
             onClick={handleClearAll}
-            className="text-red-500 hover:bg-red-50"
+            className="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10"
           >
             <ApperIcon name="Trash2" size={16} className="mr-2" />
             <span className="hidden sm:inline">Clear All</span>
           </Button>
         )}
       </div>
-
 <div className={`transition-all duration-300 ${isMobileVisible ? 'block' : 'hidden md:block'}`}>
         <div className="space-y-4 mb-6">
           <div className="flex gap-2">
@@ -187,13 +186,13 @@ return (
               animate={{ opacity: 1 }}
               className="text-center py-12"
             >
-              <div className="w-16 h-16 mx-auto mb-4 bg-surface-200 rounded-full flex items-center justify-center">
-                <ApperIcon name="Users" size={24} className="text-surface-400" />
+<div className="w-16 h-16 mx-auto mb-4 bg-surface-200 dark:bg-dark-200 rounded-full flex items-center justify-center">
+                <ApperIcon name="Users" size={24} className="text-surface-400 dark:text-dark-400" />
               </div>
-              <h3 className="text-lg font-semibold text-surface-700 mb-2">
+              <h3 className="text-lg font-semibold text-surface-700 dark:text-dark-700 mb-2">
                 No entries yet
               </h3>
-              <p className="text-surface-500 mb-4">
+              <p className="text-surface-500 dark:text-dark-500 mb-4">
                 Add names or options to get started with your wheel
               </p>
             </motion.div>
@@ -228,7 +227,7 @@ const BulkImportButton = ({ onImport }) => {
         Bulk Import
       </Button>
 
-      <AnimatePresence>
+<AnimatePresence>
         {showModal && (
           <>
             <motion.div
@@ -242,34 +241,38 @@ const BulkImportButton = ({ onImport }) => {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              className="fixed inset-0 z-50 mobile-modal md:flex md:items-center md:justify-center md:p-4"
             >
-              <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-                <h3 className="text-lg font-semibold mb-4">Bulk Import Entries</h3>
-                <p className="text-sm text-surface-600 mb-4">
-                  Enter names or options separated by commas or new lines:
-                </p>
-                <textarea
-                  value={importText}
-                  onChange={(e) => setImportText(e.target.value)}
-                  placeholder="Alice, Bob, Carol&#10;David&#10;Emma"
-                  className="w-full h-32 p-3 border border-surface-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-                <div className="flex gap-3 mt-4">
-                  <Button
-                    variant="ghost"
-                    onClick={() => setShowModal(false)}
-                    className="flex-1"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleImport}
-                    disabled={!importText.trim()}
-                    className="flex-1"
-                  >
-                    Import
-                  </Button>
+              <div className="mobile-modal-content md:contents">
+                <div className="bg-white dark:bg-dark-100 rounded-lg shadow-xl max-w-md w-full p-6 modal-scroll">
+                  <h3 className="text-lg font-semibold mb-4 text-surface-900 dark:text-dark-900">
+                    Bulk Import Entries
+                  </h3>
+                  <p className="text-sm text-surface-600 dark:text-dark-600 mb-4">
+                    Enter names or options separated by commas or new lines:
+                  </p>
+                  <textarea
+                    value={importText}
+                    onChange={(e) => setImportText(e.target.value)}
+                    placeholder="Alice, Bob, Carol&#10;David&#10;Emma"
+                    className="w-full h-32 p-3 border border-surface-300 dark:border-dark-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-dark-100 text-surface-900 dark:text-dark-900"
+                  />
+                  <div className="flex gap-3 mt-4">
+                    <Button
+                      variant="ghost"
+                      onClick={() => setShowModal(false)}
+                      className="flex-1"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={handleImport}
+                      disabled={!importText.trim()}
+                      className="flex-1"
+                    >
+                      Import
+                    </Button>
+                  </div>
                 </div>
               </div>
             </motion.div>

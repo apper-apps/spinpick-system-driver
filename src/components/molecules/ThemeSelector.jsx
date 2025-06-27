@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import ApperIcon from '@/components/ApperIcon';
 
 const themes = [
   {
@@ -44,36 +46,91 @@ const themes = [
 ];
 
 const ThemeSelector = ({ selectedTheme, onThemeChange }) => {
-  return (
-    <div className="space-y-3">
-      <h3 className="text-sm font-medium text-surface-700">Color Theme</h3>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {themes.map((theme) => (
-          <motion.button
-            key={theme.id}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => onThemeChange(theme)}
-            className={`p-3 rounded-lg border-2 transition-all ${
-              selectedTheme?.id === theme.id
-                ? 'border-primary bg-primary/5'
-                : 'border-surface-200 hover:border-surface-300'
-            }`}
-          >
-            <div className="flex gap-1 mb-2">
-              {theme.colors.slice(0, 4).map((color, index) => (
-                <div
-                  key={index}
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: color }}
-                />
-              ))}
-            </div>
-            <span className="text-xs font-medium text-surface-700">
-              {theme.name}
-            </span>
-          </motion.button>
-        ))}
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check for saved theme preference or default to light mode
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark');
+    } else {
+      setIsDarkMode(false);
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    
+    if (newMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  };
+return (
+    <div className="space-y-6">
+      {/* Dark Mode Toggle */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-medium text-surface-700 dark:text-dark-700">
+          Appearance
+        </h3>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={toggleDarkMode}
+          className="flex items-center gap-2 px-3 py-2 rounded-lg border border-surface-200 dark:border-dark-200 hover:bg-surface-100 dark:hover:bg-dark-100 transition-colors"
+        >
+          <ApperIcon 
+            name={isDarkMode ? "Sun" : "Moon"} 
+            size={16} 
+            className="text-surface-600 dark:text-dark-600" 
+          />
+          <span className="text-sm font-medium text-surface-700 dark:text-dark-700">
+            {isDarkMode ? 'Light' : 'Dark'}
+          </span>
+        </motion.button>
+      </div>
+
+      {/* Color Theme Selection */}
+      <div className="space-y-3">
+        <h3 className="text-sm font-medium text-surface-700 dark:text-dark-700">
+          Color Theme
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {themes.map((theme) => (
+            <motion.button
+              key={theme.id}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => onThemeChange(theme)}
+              className={`p-3 rounded-lg border-2 transition-all ${
+                selectedTheme?.id === theme.id
+                  ? 'border-primary bg-primary/5 dark:bg-primary/10'
+                  : 'border-surface-200 dark:border-dark-200 hover:border-surface-300 dark:hover:border-dark-300 bg-white dark:bg-dark-100'
+              }`}
+            >
+              <div className="flex gap-1 mb-2">
+                {theme.colors.slice(0, 4).map((color, index) => (
+                  <div
+                    key={index}
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: color }}
+                  />
+                ))}
+              </div>
+              <span className="text-xs font-medium text-surface-700 dark:text-dark-700">
+                {theme.name}
+              </span>
+            </motion.button>
+          ))}
+        </div>
       </div>
     </div>
   );
