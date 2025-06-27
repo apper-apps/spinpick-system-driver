@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { entryService } from "@/services/api/entryService";
@@ -7,20 +7,22 @@ import EntryCard from "@/components/molecules/EntryCard";
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 
-function EntryManager({ 
-  entries, 
+const EntryManager = ({ 
+  entries = [], 
   onEntriesChange, 
   selectedTheme, 
-  onSaveWheel, 
   onNewWheel, 
-  hasUnsavedChanges, 
+  onSaveWheel, 
   currentWheelName 
-}) {
+}) => {
   const [newEntryText, setNewEntryText] = useState('');
   const [loading, setLoading] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [wheelName, setWheelName] = useState('');
-
+  
+  // File input ref for wheel config import
+  const fileInputRef = useRef(null);
   // Listen for wheel config loading events
   useEffect(() => {
     const handleLoadWheelConfig = (event) => {
@@ -297,67 +299,91 @@ const BulkImportButton = ({ onImport }) => {
           </>
         )}
 </AnimatePresence>
-      
-      <AnimatePresence>
-        {showSaveModal && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 z-40"
-              onClick={() => setShowSaveModal(false)}
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            >
-              <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-                <h3 className="text-lg font-semibold mb-4">Save Wheel Configuration</h3>
-                <p className="text-sm text-surface-600 mb-4">
-                  Enter a name for your wheel configuration:
-                </p>
-                <Input
-                  placeholder="Enter wheel name..."
-                  value={wheelName}
-                  onChange={(e) => setWheelName(e.target.value)}
-                  className="w-full mb-4"
-                  autoFocus
-                />
-                <div className="flex gap-3">
-                  <Button
-                    variant="ghost"
-                    onClick={() => {
-                      setShowSaveModal(false);
-                      setWheelName('');
-                    }}
-                    className="flex-1"
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      if (wheelName.trim() && onSaveWheel) {
-                        onSaveWheel(wheelName.trim());
-                        setShowSaveModal(false);
-                        setWheelName('');
-                      }
-                    }}
-                    disabled={!wheelName.trim()}
-                    className="flex-1"
-                  >
-                    Save
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
     </>
   );
 };
 
-export default EntryManager;
+const SaveModal = ({ showSaveModal, setShowSaveModal, wheelName, setWheelName, onSaveWheel }) => (
+  <AnimatePresence>
+    {showSaveModal && (
+      <>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 z-40"
+          onClick={() => setShowSaveModal(false)}
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        >
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <h3 className="text-lg font-semibold mb-4">Save Wheel Configuration</h3>
+            <p className="text-sm text-surface-600 mb-4">
+              Enter a name for your wheel configuration:
+            </p>
+            <Input
+              placeholder="Enter wheel name..."
+              value={wheelName}
+              onChange={(e) => setWheelName(e.target.value)}
+              className="w-full mb-4"
+              autoFocus
+            />
+            <div className="flex gap-3">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setShowSaveModal(false);
+                  setWheelName('');
+                }}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  if (wheelName.trim() && onSaveWheel) {
+                    onSaveWheel(wheelName.trim());
+                    setShowSaveModal(false);
+                    setWheelName('');
+                  }
+                }}
+                disabled={!wheelName.trim()}
+                className="flex-1"
+              >
+                Save
+              </Button>
+            </div>
+          </div>
+        </motion.div>
+      </>
+    )}
+  </AnimatePresence>
+);
+
+const EntryManagerWithModals = (props) => {
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [wheelName, setWheelName] = useState('');
+
+  return (
+    <>
+      <EntryManager 
+        {...props} 
+        showSaveModal={showSaveModal}
+        setShowSaveModal={setShowSaveModal}
+      />
+      <SaveModal
+        showSaveModal={showSaveModal}
+        setShowSaveModal={setShowSaveModal}
+        wheelName={wheelName}
+        setWheelName={setWheelName}
+        onSaveWheel={props.onSaveWheel}
+      />
+    </>
+  );
+};
+
+export default EntryManagerWithModals;
