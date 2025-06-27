@@ -71,10 +71,12 @@ Appick
       </header>
 
       {/* Settings Modal */}
-      {showSettings && (
+{showSettings && (
         <SettingsModal
           selectedTheme={selectedTheme}
           onThemeChange={onThemeChange}
+          spinDuration={spinDuration}
+          onSpinDurationChange={onSpinDurationChange}
           onClose={() => setShowSettings(false)}
         />
       )}
