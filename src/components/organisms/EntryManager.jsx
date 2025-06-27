@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { toast } from 'react-toastify';
-import ApperIcon from '@/components/ApperIcon';
-import Button from '@/components/atoms/Button';
-import Input from '@/components/atoms/Input';
-import EntryCard from '@/components/molecules/EntryCard';
-import { entryService } from '@/services/api/entryService';
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { entryService } from "@/services/api/entryService";
+import ApperIcon from "@/components/ApperIcon";
+import EntryCard from "@/components/molecules/EntryCard";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
 
-const EntryManager = ({ 
+function EntryManager({ 
   entries, 
   onEntriesChange, 
   selectedTheme, 
@@ -15,7 +15,7 @@ const EntryManager = ({
   onNewWheel, 
   hasUnsavedChanges, 
   currentWheelName 
-}) => {
+}) {
   const [newEntryText, setNewEntryText] = useState('');
   const [loading, setLoading] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
@@ -136,8 +136,8 @@ const EntryManager = ({
             <ApperIcon name="Trash2" size={16} className="mr-2" />
             Clear All
           </Button>
-        )}
-<div className="flex gap-2">
+)}
+        <div className="flex gap-2">
           {onNewWheel && (
             <Button
               variant="ghost"
@@ -296,8 +296,9 @@ const BulkImportButton = ({ onImport }) => {
             </motion.div>
           </>
         )}
-      </AnimatePresence>
-<AnimatePresence>
+</AnimatePresence>
+      
+      <AnimatePresence>
         {showSaveModal && (
           <>
             <motion.div
