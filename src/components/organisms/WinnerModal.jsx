@@ -89,17 +89,10 @@ const WinnerModal = ({ winner, isOpen, onClose, onSpinAgain }) => {
                 </Text>
                 
                 <Text variant="heading" size="xl" weight="semibold" className="mb-6">
-                  {winner.text}
+{winner.text}
                 </Text>
                 
-                <div className="flex gap-3">
-                  <Button
-                    variant="outline"
-                    onClick={onClose}
-                    className="flex-1"
-                  >
-                    Close
-                  </Button>
+                <div className="flex flex-col gap-3">
                   <Button
                     variant="primary"
                     onClick={onSpinAgain}
@@ -107,6 +100,13 @@ const WinnerModal = ({ winner, isOpen, onClose, onSpinAgain }) => {
                   >
                     <ApperIcon name="RotateCcw" size={16} className="mr-2" />
                     Spin Again
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={onClose}
+                    className="flex-1"
+                  >
+                    Close
                   </Button>
                 </div>
               </motion.div>
