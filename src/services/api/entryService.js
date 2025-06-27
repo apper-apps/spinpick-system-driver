@@ -19,15 +19,15 @@ export const entryService = {
     return { ...entry };
   },
 
-  async create(entryData) {
+async create(entryData) {
     await delay(300);
-    const maxId = Math.max(...entryData.map(item => item.Id), 0);
+    const maxId = Math.max(...entries.map(item => item.Id), 0);
     const newEntry = {
       ...entryData,
       Id: maxId + 1,
       createdAt: new Date().toISOString()
     };
-    entryData.push(newEntry);
+    entries.push(newEntry);
     return { ...newEntry };
   },
 
