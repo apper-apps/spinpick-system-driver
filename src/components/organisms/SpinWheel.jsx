@@ -145,8 +145,8 @@ const handleSpin = () => {
       >
 <canvas
           ref={canvasRef}
-          width={window.innerWidth < 768 ? 300 : 400}
-          height={window.innerWidth < 768 ? 300 : 400}
+          width={window.innerWidth < 768 ? Math.min(300, window.innerWidth - 40) : Math.min(400, window.innerWidth - 100)}
+          height={window.innerWidth < 768 ? Math.min(300, window.innerWidth - 40) : Math.min(400, window.innerWidth - 100)}
           className="drop-shadow-2xl rounded-full max-w-full h-auto"
         />
         {entries.length === 0 && (

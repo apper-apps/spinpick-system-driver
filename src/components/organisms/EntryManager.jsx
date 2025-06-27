@@ -7,7 +7,7 @@ import EntryCard from "@/components/molecules/EntryCard";
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 
-const EntryManager = ({ entries, onEntriesChange, selectedTheme }) => {
+const EntryManager = ({ entries, onEntriesChange, selectedTheme, isMobileVisible = true, onToggleVisible }) => {
   const [newEntryText, setNewEntryText] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -106,12 +106,27 @@ const handleBulkImport = async (text) => {
     }
   };
 
-  return (
-<div className="bg-surface-50 rounded-xl p-3 md:p-6 shadow-lg border border-surface-200 h-full flex flex-col">
+return (
+    <div className="bg-surface-50 rounded-xl p-3 md:p-6 shadow-lg border border-surface-200 h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-surface-900">
-          Entries ({entries.length})
-        </h2>
+        <div className="flex items-center gap-3">
+          <h2 className="text-xl font-bold text-surface-900">
+            Entries ({entries.length})
+          </h2>
+          {/* Mobile collapse button */}
+          {onToggleVisible && (
+            <button
+              onClick={onToggleVisible}
+              className="md:hidden p-1 hover:bg-surface-200 rounded-md transition-colors"
+            >
+              <ApperIcon 
+                name={isMobileVisible ? "ChevronUp" : "ChevronDown"} 
+                size={16} 
+                className="text-surface-600"
+              />
+            </button>
+          )}
+        </div>
         {entries.length > 0 && (
           <Button
             variant="ghost"
@@ -120,12 +135,12 @@ const handleBulkImport = async (text) => {
             className="text-red-500 hover:bg-red-50"
           >
             <ApperIcon name="Trash2" size={16} className="mr-2" />
-            Clear All
+            <span className="hidden sm:inline">Clear All</span>
           </Button>
         )}
-</div>
+      </div>
 
-      <div className="transition-all duration-300 block">
+<div className={`transition-all duration-300 ${isMobileVisible ? 'block' : 'hidden md:block'}`}>
         <div className="space-y-4 mb-6">
           <div className="flex gap-2">
             <Input

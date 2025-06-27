@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { spinResultService } from "@/services/api/spinResultService";
 import { entryService } from "@/services/api/entryService";
+import ApperIcon from "@/components/ApperIcon";
 import Header from "@/components/organisms/Header";
 import EntryManager from "@/components/organisms/EntryManager";
 import SpinWheel from "@/components/organisms/SpinWheel";
@@ -34,7 +35,7 @@ const themes = [
 const Home = () => {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
-const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [spinDuration, setSpinDuration] = useState(3000);
   const [selectedTheme, setSelectedTheme] = useState(themes[0]);
@@ -42,6 +43,7 @@ const [error, setError] = useState(null);
   const [showWinnerModal, setShowWinnerModal] = useState(false);
   const [spinHistory, setSpinHistory] = useState([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isMobileEntriesVisible, setIsMobileEntriesVisible] = useState(true);
 
 useEffect(() => {
     loadEntries();
@@ -133,8 +135,12 @@ const handleThemeChange = (theme) => {
     setEntries(updatedEntries);
   };
 
-  const toggleFullscreen = () => {
+const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
+  };
+
+  const toggleMobileEntries = () => {
+    setIsMobileEntriesVisible(!isMobileEntriesVisible);
   };
 
   if (loading) {
@@ -179,12 +185,13 @@ const handleThemeChange = (theme) => {
 
 if (isFullscreen) {
     return (
-      <div className="h-screen flex items-center justify-center bg-gray-900 overflow-hidden">
+      <div className="h-screen w-screen flex items-center justify-center bg-gray-900 overflow-hidden fixed inset-0 z-50">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
-className="flex flex-col items-center space-y-8"
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex flex-col items-center space-y-8 w-full h-full justify-center"
         >
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center flex-1">
             <SpinWheel
               entries={entries}
               onSpinComplete={handleSpinComplete}
@@ -193,6 +200,13 @@ className="flex flex-col items-center space-y-8"
               selectedTheme={selectedTheme}
             />
           </div>
+          
+          <button
+            onClick={() => setIsFullscreen(false)}
+            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+          >
+            <ApperIcon name="X" size={24} />
+          </button>
         </motion.div>
 
         <WinnerModal
@@ -207,13 +221,15 @@ className="flex flex-col items-center space-y-8"
 
 return (
     <div className="h-screen flex flex-col overflow-hidden bg-surface-200">
-<Header
+      <Header
         selectedTheme={selectedTheme}
         onThemeChange={handleThemeChange}
         spinHistory={spinHistory}
         spinDuration={spinDuration}
         onSpinDurationChange={setSpinDuration}
         onClearHistory={clearSpinHistory}
+        isFullscreen={isFullscreen}
+        onToggleFullscreen={toggleFullscreen}
       />
       
 <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
@@ -232,18 +248,38 @@ return (
               selectedTheme={selectedTheme}
             />
           </div>
+
+          {/* Mobile Entries Toggle Button */}
+          <div className="md:hidden flex justify-center pb-2">
+            <button
+              onClick={toggleMobileEntries}
+              className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm border border-surface-200 text-surface-700 hover:bg-surface-50 transition-colors"
+            >
+              <ApperIcon 
+                name={isMobileEntriesVisible ? "ChevronDown" : "ChevronUp"} 
+                size={16} 
+              />
+              <span className="text-sm font-medium">
+                {isMobileEntriesVisible ? "Hide" : "Show"} Entries ({entries.length})
+              </span>
+            </button>
+          </div>
         </motion.div>
 
         {/* Sidebar */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
-          className="w-full md:w-96 p-3 md:p-6 flex-shrink-0 max-h-96 md:max-h-none"
+          className={`w-full md:w-96 p-3 md:p-6 flex-shrink-0 transition-all duration-300 ${
+            isMobileEntriesVisible ? 'max-h-96 md:max-h-none' : 'max-h-0 md:max-h-none overflow-hidden md:overflow-visible'
+          }`}
         >
           <EntryManager
             entries={entries}
             onEntriesChange={setEntries}
             selectedTheme={selectedTheme}
+            isMobileVisible={isMobileEntriesVisible}
+            onToggleVisible={toggleMobileEntries}
           />
         </motion.div>
       </div>
