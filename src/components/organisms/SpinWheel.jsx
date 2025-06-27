@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState, forwardRef, useImperativeHandle } from 'react';
-import { motion } from 'framer-motion';
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 const SpinWheel = forwardRef(({ 
   entries = [], 
@@ -130,7 +130,7 @@ const handleSpin = () => {
     requestAnimationFrame(animate);
   };
 
-  // Expose spin method to parent component
+// Expose spin method to parent component
   useImperativeHandle(ref, () => ({
     spin: handleSpin,
     isSpinning
@@ -140,7 +140,8 @@ const handleSpin = () => {
     <div className="flex items-center justify-center">
       <motion.div
         whileHover={{ scale: 1.02 }}
-        className="relative"
+        className="relative cursor-pointer"
+        onClick={handleSpin}
       >
         <canvas
           ref={canvasRef}
@@ -148,7 +149,6 @@ const handleSpin = () => {
           height={400}
           className="drop-shadow-2xl rounded-full"
         />
-        
         {entries.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center p-8">
@@ -166,7 +166,7 @@ const handleSpin = () => {
         )}
       </motion.div>
     </div>
-);
+  );
 });
 
 SpinWheel.displayName = 'SpinWheel';

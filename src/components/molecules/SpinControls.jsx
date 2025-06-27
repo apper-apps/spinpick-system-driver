@@ -15,55 +15,11 @@ const SpinControls = ({
   return (
     <div className="bg-surface-50 rounded-xl p-6 shadow-lg border border-surface-200">
       <div className="text-center space-y-4">
-        <motion.div
-          className={`inline-block ${isSpinning ? 'animate-pulse-glow' : ''}`}
-        >
-<Button
-            variant="accent"
-            size="xl"
-            onClick={() => wheelRef?.current?.spin?.()}
-            disabled={disabled || isSpinning || entriesCount < 2 || !wheelRef?.current}
-            className="w-32 h-32 rounded-full text-2xl font-bold shadow-2xl"
-          >
-            {isSpinning ? (
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              >
-                <ApperIcon name="RotateCw" size={32} />
-              </motion.div>
-            ) : (
-              <span>SPIN</span>
-            )}
-          </Button>
-        </motion.div>
-
-        {entriesCount < 2 && (
-          <p className="text-sm text-surface-500">
-            Add at least 2 entries to spin
+{entriesCount < 2 && (
+          <p className="text-sm text-surface-500 text-center">
+            Add at least 2 entries to spin the wheel
           </p>
         )}
-
-<div className="space-y-2">
-          <label className={`block text-sm font-medium ${isFullscreen ? 'text-white' : 'text-surface-700'}`}>
-            Spin Duration: {(spinDuration / 1000).toFixed(1)}s
-          </label>
-          <input
-            type="range"
-            min="2000"
-            max="8000"
-            step="500"
-            value={spinDuration}
-            onChange={(e) => onDurationChange(parseInt(e.target.value))}
-            disabled={isSpinning}
-            className="w-full h-2 bg-surface-200 rounded-lg appearance-none cursor-pointer slider"
-          />
-          <div className={`flex justify-between text-xs ${isFullscreen ? 'text-gray-300' : 'text-surface-500'}`}>
-            <span>2s</span>
-            <span>8s</span>
-          </div>
-        </div>
-
         {onToggleFullscreen && (
           <div className="pt-4 border-t border-surface-200">
             <Button

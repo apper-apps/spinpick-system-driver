@@ -20,10 +20,10 @@ const Header = ({ selectedTheme, onThemeChange, spinHistory = [] }) => {
               className="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center"
             >
               <ApperIcon name="Target" size={24} className="text-white" />
-            </motion.div>
+</motion.div>
             <div>
               <Text variant="display" size="xl" weight="bold">
-                SpinPick
+                Appick
               </Text>
               <Text variant="caption" size="sm">
                 Random Name Picker Wheel
@@ -79,7 +79,7 @@ const Header = ({ selectedTheme, onThemeChange, spinHistory = [] }) => {
   );
 };
 
-const SettingsModal = ({ selectedTheme, onThemeChange, onClose }) => {
+const SettingsModal = ({ selectedTheme, onThemeChange, onClose, spinDuration, onSpinDurationChange }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -102,12 +102,38 @@ const SettingsModal = ({ selectedTheme, onThemeChange, onClose }) => {
           <Button variant="ghost" size="sm" onClick={onClose}>
             <ApperIcon name="X" size={20} />
           </Button>
-        </div>
+</div>
 
-        <ThemeSelector
-          selectedTheme={selectedTheme}
-          onThemeChange={onThemeChange}
-        />
+        <div className="space-y-6">
+          <ThemeSelector
+            selectedTheme={selectedTheme}
+            onThemeChange={onThemeChange}
+          />
+
+          <div className="space-y-3">
+            <Text variant="body" weight="medium">
+              Spin Duration
+            </Text>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-surface-700">
+                Duration: {(spinDuration / 1000).toFixed(1)}s
+              </label>
+              <input
+                type="range"
+                min="2000"
+                max="8000"
+                step="500"
+                value={spinDuration}
+                onChange={(e) => onSpinDurationChange(parseInt(e.target.value))}
+                className="w-full h-2 bg-surface-200 rounded-lg appearance-none cursor-pointer slider"
+              />
+              <div className="flex justify-between text-xs text-surface-500">
+                <span>2s</span>
+                <span>8s</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className="mt-6 pt-4 border-t border-surface-200">
           <Button variant="primary" onClick={onClose} className="w-full">

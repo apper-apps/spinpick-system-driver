@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { toast } from 'react-toastify';
-import Header from '@/components/organisms/Header';
-import SpinWheel from '@/components/organisms/SpinWheel';
-import EntryManager from '@/components/organisms/EntryManager';
-import SpinControls from '@/components/molecules/SpinControls';
-import WinnerModal from '@/components/organisms/WinnerModal';
-import { entryService } from '@/services/api/entryService';
-import { spinResultService } from '@/services/api/spinResultService';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { spinResultService } from "@/services/api/spinResultService";
+import { entryService } from "@/services/api/entryService";
+import Header from "@/components/organisms/Header";
+import EntryManager from "@/components/organisms/EntryManager";
+import SpinWheel from "@/components/organisms/SpinWheel";
+import WinnerModal from "@/components/organisms/WinnerModal";
 
 const themes = [
   {
@@ -35,7 +34,7 @@ const themes = [
 const Home = () => {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const [error, setError] = useState(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [spinDuration, setSpinDuration] = useState(3000);
   const [selectedTheme, setSelectedTheme] = useState(themes[0]);
@@ -82,9 +81,9 @@ useEffect(() => {
     } catch (err) {
       console.error('Failed to load spin history:', err);
     }
-  };
+};
 
-  const handleSpin = () => {
+  const handleSpinStart = () => {
     if (entries.length < 2) {
       toast.warning('Add at least 2 entries to spin the wheel');
       return;
@@ -172,28 +171,15 @@ if (isFullscreen) {
       <div className="h-screen flex items-center justify-center bg-gray-900 overflow-hidden">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="flex flex-col items-center space-y-8"
+className="flex flex-col items-center space-y-8"
         >
           <div className="flex items-center justify-center">
             <SpinWheel
               entries={entries}
-              isSpinning={isSpinning}
               onSpinComplete={handleSpinComplete}
+              onSpinStart={handleSpinStart}
               spinDuration={spinDuration}
               selectedTheme={selectedTheme}
-            />
-          </div>
-          
-          <div className="flex justify-center">
-            <SpinControls
-              onSpin={handleSpin}
-              isSpinning={isSpinning}
-              spinDuration={spinDuration}
-              onDurationChange={setSpinDuration}
-              entriesCount={entries.length}
-              isFullscreen={isFullscreen}
-              onToggleFullscreen={toggleFullscreen}
             />
           </div>
         </motion.div>
@@ -208,40 +194,30 @@ if (isFullscreen) {
     );
   }
 
-  return (
+return (
     <div className="h-screen flex flex-col overflow-hidden bg-surface-200">
       <Header
         selectedTheme={selectedTheme}
         onThemeChange={handleThemeChange}
         spinHistory={spinHistory}
+        spinDuration={spinDuration}
+        onSpinDurationChange={setSpinDuration}
       />
       
-      <div className="flex-1 flex overflow-hidden">
+<div className="flex-1 flex overflow-hidden">
         {/* Main Wheel Area */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           className="flex-1 flex flex-col p-6 overflow-hidden"
         >
-          <div className="flex-1 flex items-center justify-center mb-6">
+          <div className="flex-1 flex items-center justify-center">
             <SpinWheel
               entries={entries}
-              isSpinning={isSpinning}
               onSpinComplete={handleSpinComplete}
+              onSpinStart={handleSpinStart}
               spinDuration={spinDuration}
               selectedTheme={selectedTheme}
-            />
-          </div>
-          
-          <div className="flex justify-center">
-            <SpinControls
-              onSpin={handleSpin}
-              isSpinning={isSpinning}
-              spinDuration={spinDuration}
-              onDurationChange={setSpinDuration}
-              entriesCount={entries.length}
-              isFullscreen={isFullscreen}
-              onToggleFullscreen={toggleFullscreen}
             />
           </div>
         </motion.div>
