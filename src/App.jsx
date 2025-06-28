@@ -7,17 +7,17 @@ import { routes, routeArray } from './config/routes';
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  useEffect(() => {
+useEffect(() => {
     // Check for saved theme preference or default to light mode
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+    // Only use dark mode if explicitly saved as 'dark'
+    if (savedTheme === 'dark') {
       setIsDarkMode(true);
     } else {
+      // Default to light mode for new users and any other case
       setIsDarkMode(false);
     }
-    
     // Listen for theme changes
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
